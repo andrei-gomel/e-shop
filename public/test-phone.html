@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            padding: 30px;
+        }
+        hr {
+            margin: 5px 0 5px;
+        }
+        input {
+            display: inline-block !important;
+            width: auto !important;
+        }
+        #country, #phone {
+            display: inline-block;
+            width: auto;
+        }
+        label[for="phone"] {
+            display: block;
+        }
+    </style>
+    <!-- Подключение библиотеки jQuery -->
+    <script src="jquery.js"></script>
+    <!-- Подключение jQuery плагина Masked Input -->
+    <script src="js/jquery.maskedinput.min.js"></script>
+    <script src="js/phone.js"></script>
+</head>
+<body>
+<div class="form-group">
+    <label for="phone">Телефон: </label>
+    <select id="country" class="form-control">
+        <option value="ru"><img src="">Россия +7</option>
+        <option value="ua">Украина +380</option>
+        <option value="by">Белоруссия +375</option>
+    </select>
+    <input id="phone" type="text" class="form-control">
+</div>
+</body>
+</html>

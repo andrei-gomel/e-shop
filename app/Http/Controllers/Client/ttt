@@ -1,0 +1,4 @@
+DB::table('users')->select(DB::raw('count(*) as user_count, status'))->where('status', '<>', 1)->groupBy('status')->get();
+DB::table('products')->selectRaw('price * ? as price_with_tax', [.75])->get();
+DB::table('products')->orderByRaw('updated_at - created_at DESC')->get();
+DB::table('products')->select('name')->whereIn('id', [1, 3])->get();
