@@ -7,6 +7,13 @@
     <meta name="author" content="">
     <title>Главная</title>
 
+    <style>
+        del {
+	        text-decoration: line-through;
+	        text-decoration-color: red;
+        }
+    </style>
+
     <link rel="stylesheet" href="{{ asset('css/default/main.css') }}">
     <link rel="stylesheet" href="{{ asset('css/default/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/default/font-awesome.min.css') }}">
@@ -81,8 +88,9 @@ $start_time = $start_array[1] + $start_array[0];
                 <div class="col-sm-8">
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
-                            <li><a href="{{ route('showcart') }}">
-                                    <i class="fa fa-shopping-cart fa-lg"></i> Корзина (<span id="cart-count">@if(session('products') !== null) {{ count(session('products')) }} @else 0 @endif</span>)</a></li>
+                            <li>
+                                <a href="{{ route('showcart') }}">
+                                <i class="fa fa-shopping-cart fa-lg"></i> Корзина (<span id="cart-count">@if(session('products') !== null) {{ count(session('products')) }} @else 0 @endif</span>)</a></li>
                             @if (Auth::check())
                                 <li><a href="/client/cabinet/"><i class="fa fa-user fa-lg"></i> Аккаунт</a></li>
                                 <li><a href="/client/logout/"><i class="fa fa-unlock fa-lg"></i> Выход</a></li>
@@ -131,88 +139,90 @@ $start_time = $start_array[1] + $start_array[0];
 </header><!--/header-->
 
 <section>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="left-sidebar">
-                            <h2>Каталог</h2>
-                            <div class="panel-group category-products" id="accordian"><!--category-productsr-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="left-sidebar">
+                    <h2>Каталог</h2>
+                    <div class="panel-group category-products" id="accordian"><!--category-productsr-->
 
-                                @foreach($categories as $item)
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a href="{{ route('category-view', $item->id) }}"
-                                                @if($item->id == $product->category_id)
-                                                    class="active"
-                                                    @endif
-                                                >{{ $item->title }}</a></h4>
-                                        </div>
-                                    </div>
-                                @endforeach
-
-                            </div><!--/category-products-->
-
-                        </div>
-                    </div>
-
-                    <div class="col-sm-9 padding-right">
-                        <div class="product-details"><!--product-details-->
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="view-product">
-
-                                        <!-- <img src="<? echo Instruments::getImage($product['id'])?>" width="100"> -->
-                                        <img src="/img/default/home/product1.jpg" width="100">
-                                    </div>
-                                    {{--<? if ($product['is_new'] == 1):
-                                        echo '<img src="/template/images/home/new.jpg" class="new" alt="">';
-                                    endif; ?>--}}
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="product-information"><!--/product-information-->
-
-                                        <h2>{{ $product->name }}</h2>
-                                        <p><b>Код товара:</b> {{ $product->code }}</p>
-                                        <span>
-                                            <span>{{ $product->price }}р</span>
-                                            <label>Количество:</label>
-                                            <input type="text" value="3" />
-
-                                          <!-- <button type="button" class="btn btn-fefault cart">
-                                                <i class="fa fa-shopping-cart"></i> В корзину</button> -->
-
-                                             <a href="/addtocart/{{ $product->id }}" data-id="{{ $product->id }}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>В корзину</a>
-
-                                        </span>
-                                        <p><b>Наличие:</b> На складе</p>
-                                        <p><b>Цвет:</b> {{ $product->color }}</p>
-                                        <p><b>Производитель:</b> {{ $product->brand }}</p>
-                                    </div><!--/product-information-->
+                        @foreach($categories as $item)
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                    <a href="{{ route('category-view', $item->id) }}"
+                                        @if($item->id == $product->category_id)
+                                            class="active"
+                                        @endif
+                                        >{{ $item->title }}</a></h4>
                                 </div>
                             </div>
-                            <br><br><br>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <h3>Описание товара</h3>
-                                    <p>{{ $product->description }}</p>
-                                </div>
-                            </div>
-                        </div><!--/product-details-->
-
-                    </div>
+                        @endforeach
+                    </div><!--/category-products-->
                 </div>
             </div>
-        </section>
 
-        <br/>
-        <br/>
+            <div class="col-sm-9 padding-right">
+                <div class="product-details"><!--product-details-->
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="view-product">
+                            <!-- <img src="<? echo Instruments::getImage($product['id'])?>" width="100"> -->
+                            <img src="/img/default/home/product1.jpg" width="100">
+                            </div>
+                            {{--<? if ($product['is_new'] == 1):
+                            echo '<img src="/template/images/home/new.jpg" class="new" alt="">';
+                            endif; ?>--}}
+                        </div>
+                    <div class="col-sm-7">
+                <div class="product-information"><!--/product-information-->
+
+                    <h2>{{ $product->name }}</h2>
+                    <p><b>Код товара:</b> {{ $product->code }}</p>
+
+                    <span>
+                    @if ($product->new_price)
+                        <h3><del>{{ $product->price }}р</del></h3>
+                        <span>{{ $product->new_price }}р</span>
+                        <label>Скидка {{ $product->skidka }}%</label>
+                    @else
+                        <span>{{ $product->price }}р</span>
+                    @endif
+
+                    <br><br>
+                    <label>Количество:</label>
+                    <input type="text" value="1" /><br><br>
+
+                    <!-- <button type="button" class="btn btn-fefault cart">
+                    <i class="fa fa-shopping-cart"></i> В корзину</button> -->
+
+                    <a href="/addtocart/{{ $product->id }}" data-id="{{ $product->id }}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>В корзину</a>
+
+                    </span>
+                    <p><b>Наличие:</b> На складе</p>
+                    <p><b>Цвет:</b> {{ $product->color }}</p>
+                    <p><b>Производитель:</b> {{ $product->brand }}</p>
+                </div><!--/product-information-->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Описание товара</h3>
+                <p>{{ $product->description }}</p>
+            </div>
+        </div>
+    </div><!--/product-details-->
+</section>
+
+<br>
+<br>
 <footer id="footer"><!--Footer-->
     <div class="footer-bottom">
         <div class="container">
             <div class="row">
                 <p class="pull-left">Copyright © 2022</p>
-                <p class="pull-right">Computer-shop</p>
+                <p class="pull-right">Fashion-shop</p>
             </div>
         </div>
     </div>

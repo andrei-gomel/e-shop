@@ -125,14 +125,6 @@
                             Отчеты
                         </a>
                     </li>
-                    <!--<li class="header-nav__video">
-                       <a href="/admin/video">
-                          <svg>
-                             <use xlink:href="/img/nav.svg#video"></use>
-                          </svg>
-                          Видеоконсультант
-                       </a>
-                    </li>-->
 
                     <li class="header-nav__setting">
                         <a href="{{ route('client-logout') }}">
@@ -182,8 +174,10 @@
             <div class="page-header">
                 <div class="_container">
                     <div class="page-header__body">
-                        <h1 class="page-header__title">{{ __('Админка / Товары') }}</h1>
+                        <h1 class="page-header__title">{{ __('Админка / Товары') }}</h1><br>
                         <div class="page-header__actions">
+
+
 
                             <a href="{{ route('product-create') }}" class="btn btn__main">{{ __('Добавить товар') }}</a>
                             <div class="page-header__list">
@@ -212,6 +206,48 @@
                 </div>
             </div>
             <!-- Page header -->
+
+            <!-- Filter -->
+            <form action="{{ route('product-filterbyoption') }}" method="post">
+                @csrf
+            <div class="filter">
+                <div class="_container">
+                   <div class="filter__body">
+                      <div class="filter-drops">
+                         <div class="select filter-select filter-select__search">
+                            <div class="filter-select__search-froup">
+                               <input type="text" class="filter-select__btn form-control" placeholder="Поиск по коду...">
+                               <button class="btn filter-select__search-btn"><svg><use xlink:href="./img/sprite.svg#search"></use></svg></button>
+                            </div>
+                         </div>
+                      </div>
+
+                      <div class="select filter-select">
+                        <button class="btn select__btn filter-select__btn">
+                           <span>Сортировать по...</span>
+                           <svg><use xlink:href="./img/sprite.svg#drop"></use></svg>
+                        </button>
+                        <ul class="select__list filter-select__list">
+                           <li class="select__item filter-select__item" data-value="0">По бренду</li>
+                           <li class="select__item filter-select__item" data-value="1">По категории</li>
+                           <li class="select__item filter-select__item" data-value="2">Сначала дешевые</li>
+                           <li class="select__item filter-select__item" data-value="3">Сначала дорогие</li>
+                           <li class="select__item filter-select__item" data-value="4">Статус</li>
+                        </ul>
+                        <input type="text" name="sort_by" class="select__input" value="" hidden/>
+                     </div>
+
+                      <div class="filter-act">
+                         <div class="filter-actions">
+                            <button class="btn btn__main filter-submit"><svg><use xlink:href="./img/sprite.svg#check"></use></svg>Применить</button>
+                           <!-- <a href="{{ route('product-create') }}" class="btn btn__main">{{ __('Найти') }}</a>-->
+                        </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+            </form>
+             <!-- Filter -->
 
             <div class="page-table mt-3">
                 <div class="table-responsive">
@@ -249,8 +285,8 @@
 
                                             <a href="{{ route('product-edit', $item->id) }}">
                                                 <svg><use xlink:href="/img/sprite.svg#arrow"></use></svg></a>
-                                            <a href="/admin/client/destroy/{{ $item->id }}"><svg><use xlink:href="/img/sprite.svg#close"></use></svg></a>
-                                            <a href="/admin/client/view/{{ $item->id }}"><svg><use xlink:href="/img/sprite.svg#home"></use></svg></a>
+                                            <a href="{{ route('product-destroy', $item->id) }}"><svg><use xlink:href="/img/sprite.svg#close"></use></svg></a>
+                                            <a href="{{ route('product-show', $item->id) }}"><svg><use xlink:href="/img/sprite.svg#home"></use></svg></a>
 
                                         </div>
                                     </td>

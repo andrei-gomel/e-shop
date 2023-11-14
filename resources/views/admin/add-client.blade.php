@@ -54,10 +54,13 @@
 </head>
 
 <body>
+
 @cannot('view-protected-part')
     <h4>Доступ запрещен</h4>
 @endcan
+
 @can('view-protected-part')
+
     <div id="container">
 
         <nav class="header-nav">
@@ -216,7 +219,7 @@
                                 <h3 class="add-new__title">{{ __('Добавление нового пользователя') }}</h3>
                             @endif
                             <div class="add-new__actions">
-                                <a href="javascript:history.back()" class="btn add-new__btn add-new__cancel">Отменить</a>
+                                <a href="{{ route('admin-clients') }}" class="btn add-new__btn add-new__cancel">Отменить</a>
 
                                 <button class="btn btn__main add-new__btn add-new__save" form="edit-cat">Сохранить</button>
 

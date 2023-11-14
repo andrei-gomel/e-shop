@@ -242,7 +242,7 @@
                                       </div>
                                   @endif--}}
 
-                                <form action="{{ route('order-update', $order[0]->id) }}" method="post" id="edit-cat">
+                                <form action="{{ route('client-order-update', $order[0]->id) }}" method="post" id="edit-cat">
                                 @method('PUT')
                                 @csrf
                                         <div class="add-new__form">
@@ -324,7 +324,7 @@
                                             </div>
 
                                             <div class="add-new__form-group">
-                                                <input type="text" name="address" class="add-new__form-control form-control" placeholder="Менеджер" value="{{ old('email', $order[0]->manager) }}">
+                                                <input type="text" name="manager" class="add-new__form-control form-control" placeholder="Менеджер" value="{{ old('email', $order[0]->manager) }}">
                                             </div>
 
                                             <div class="add-new__form-group">

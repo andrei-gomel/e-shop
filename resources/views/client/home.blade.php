@@ -279,7 +279,7 @@ $start_time = $start_array[1] + $start_array[0];
         <div class="container">
             <div class="row">
                 <p class="pull-left">Copyright © 2023</p>
-                <p class="pull-right">E-shop.by</p>
+                <p class="pull-right">Fashion-shop.by</p>
             </div>
         </div>
     </div>

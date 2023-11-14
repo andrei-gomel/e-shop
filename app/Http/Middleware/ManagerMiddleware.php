@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class AdminMiddleware
+class ManagerMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->role !== User::ADMIN_ROLE)
+        if(auth()->user()->role !== 1)
         {
             abort(403);
         }

@@ -25,6 +25,13 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+
+    <script src="{{ asset('js/default/jquery.js') }}"></script>
+    <script src="{{ asset('js/default/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/default/jquery.scrollUp.min.js') }}"></script>
+    <script src="{{ asset('js/default/price-range.js') }}"></script>
+    <script src="{{ asset('js/default/jquery.prettyPhoto.js') }}"></script>
+    <script src="{{ asset('js/default/main.js') }}"></script>
 </head><!--/head-->
 
 <body>
@@ -166,7 +173,11 @@ $start_time = $start_array[1] + $start_array[0];
 
                                         <p></p>
 
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>В корзину</a>
+                                        <!--<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>В корзину</a>-->
+
+                                        <a href="/addtocart/{{ $item->id }}" data-id="{{ $item->id }}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>В корзину</a>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -278,7 +289,7 @@ $start_time = $start_array[1] + $start_array[0];
         <div class="container">
             <div class="row">
                 <p class="pull-left">Copyright © 2023</p>
-                <p class="pull-right">E-shop.by</p>
+                <p class="pull-right">Fashion-shop.by</p>
             </div>
         </div>
     </div>

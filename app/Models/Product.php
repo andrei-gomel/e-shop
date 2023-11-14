@@ -18,6 +18,7 @@ class Product extends Model
         'code',
         'description',
         'price',
+        'new_price',
         'quantity',
         'color',
         'user_id',

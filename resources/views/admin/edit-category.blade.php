@@ -174,7 +174,7 @@
         <div class="page-header">
             <div class="_container">
                 <div class="page-header__body">
-                    <h1 class="page-header__title">{{ __('Категории') }}</h1>
+                    <h1 class="page-header__title">{{ __('Админка / Категории') }}</h1>
                     <div class="page-header__actions">
                         <div class="page-header__list">
                             <!--<div class="page-header__lang">

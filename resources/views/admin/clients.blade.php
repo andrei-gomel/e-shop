@@ -261,8 +261,8 @@
                   </thead>
                   <tbody>
 
-@if(count($clientList) > 0)
-@foreach ($clientList as $item)
+                    @if(count($clientList) > 0)
+                    @foreach ($clientList as $item)
                      <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->name }}</td>
@@ -275,17 +275,15 @@
                         <td>{{ \App\Models\User::$status[$item->status] }}</td>
                         <td>
                            <div>
-
                               <a href="{{ route('client-edit', $item->id) }}">
                                  <svg><use xlink:href="/img/sprite.svg#arrow"></use></svg></a>
                               <a href="/admin/client/destroy/{{ $item->id }}"><svg><use xlink:href="/img/sprite.svg#close"></use></svg></a>
                               <a href="/admin/client/view/{{ $item->id }}"><svg><use xlink:href="/img/sprite.svg#home"></use></svg></a>
-
                            </div>
                         </td>
                      </tr>
-@endforeach
-@endif
+                    @endforeach
+                    @endif
 
                   </tbody>
                </table>

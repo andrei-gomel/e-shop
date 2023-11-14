@@ -11,7 +11,14 @@ class ProductController extends Controller
 {
     public function index($id)
     {
-        $product = Product::where('id', $id)->first();
+        $id = intval($id);
+
+        $product = Product::findOrFail($id);
+
+        if ($product->new_price !== null)
+        {
+            $product->skidka = ($product->price - $product->new_price) / $product->price * 100;
+        }
 
         $categories = Category::where('parent_id', 1)->get();
 

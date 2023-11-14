@@ -36,7 +36,20 @@ class ClientController extends Controller
      */
     public function view($id)
     {
+        $id = intval($id);
+
         $user = DB::table('users')->where('id', $id)->first();
+        //$user = User::find($id);
+
+        if (empty($user)) {
+            $notification = [
+                'message' => 'Клиент id='.$id.' не найден',
+                'alert-type' => 'warning',
+            ];
+
+            return back()->with($notification)
+                ->withInput();
+        }
 
         // Получение страны юзера
         $country = User::find($id)->country;
@@ -45,7 +58,11 @@ class ClientController extends Controller
         //$countryList = Country::all();
         //$countryList = DB::table('country')->get();
 
-        return view('admin.setting-data', compact('user'));
+        //dd($user);
+
+        $order = [];
+
+        return view('admin.view-user', compact('user', 'order'));
     }
 
     public function create()
@@ -54,16 +71,20 @@ class ClientController extends Controller
 
         $user = new User();
 
-        return view('admin.add-client', compact('countries', 'user'));
+        $roles = User::$roles;
+
+        return view('admin.add-client', compact('countries', 'user', 'roles'));
     }
 
     public function edit($id)
     {
+        $id = intval($id);
+
         $user = User::find($id);
 
-        if (empty($user)) {
+        if ($user === null) {
             $notification = [
-                'message' => 'Запись id='.$id.' не найдена',
+                'message' => 'Клиент id='.$id.' не найден',
                 'alert-type' => 'warning',
             ];
 
@@ -75,8 +96,6 @@ class ClientController extends Controller
         $country = User::find($id)->country;
 
         //$user->country = $country->name;
-
-        //dd($user);
 
         $roles = User::$roles;
 
@@ -92,10 +111,6 @@ class ClientController extends Controller
     public function store(ClientCreateRequest $request)
     {
         $data = $request->validated();
-
-        //dd($data);
-
-        //$pass = $data['password'];
 
         //$data['password'] = Hash::make($data['password']);
 
@@ -117,14 +132,14 @@ class ClientController extends Controller
                 'alert-type' => 'warning',
             ];
 
-            return back()->with($notification, $errors)
+            return back()->with($notification)
                 ->withInput();
         }
     }
 
     public function destroy($id)
     {
-        //dd($id);
+        $id = intval($id);
 
         $result = User::destroy($id);
 
@@ -152,7 +167,9 @@ class ClientController extends Controller
 
     public function update(ClientCreateRequest $request, $id)
     {
-        $user = User::find($id);
+        $id = intval($id);
+
+        $user = User::findOrFail($id);
 
         $data = $request->all();
 
@@ -166,8 +183,6 @@ class ClientController extends Controller
             unset($data['password']);
             unset($data['password_confirmation']);
         }
-
-
 
         $result = $user->update($data);
 

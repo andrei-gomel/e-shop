@@ -174,7 +174,7 @@
             <div class="page-header">
                 <div class="_container">
                     <div class="page-header__body">
-                        <h1 class="page-header__title">{{ __('Товары') }}</h1>
+                        <h1 class="page-header__title">{{ __('Админка / Товары') }}</h1>
                         <div class="page-header__actions">
                             <div class="page-header__list">
                                 <!--<div class="page-header__lang">
@@ -187,11 +187,7 @@
                                         <li class="active"><a href="#">ru</a></li>
                                     </ul>
                                 </div>-->
-                                <a href="./search.html" class="page-header__search">
-                                    <svg>
-                                        <use xlink:href="/img/sprite.svg#search"></use>
-                                    </svg>
-                                </a>
+
                                 <!--<a href="./mess.html" class="page-header__mess">
                                     <svg>
                                         <use xlink:href="/img/sprite.svg#messpc"></use>
@@ -218,7 +214,7 @@
                                 <h3 class="add-new__title">{{ __('Добавление товара') }}</h3>
                             @endif
                             <div class="add-new__actions">
-                                <a href="javascript:history.back()" class="btn add-new__btn add-new__cancel">Отменить</a>
+                                <a href="{{ route('product-index') }}" class="btn add-new__btn add-new__cancel">Отменить</a>
 
                                 <button class="btn btn__main add-new__btn add-new__save" form="edit-cat">Сохранить</button>
 
@@ -228,107 +224,139 @@
                 </div>
                 <div class="add-new__body">
                     <div class="_container">
-                        {{--           @if($errors->any())
-                                      <div class="row justify-content-center">
-                                          <div class="col-md-11">
-                                              <div class="alert alert-danger" role="alert">
-                                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                      <span aria-hidden="true">x</span>
-                                                  </button>
-                                                  {{ $errors->first() }}
-                                              </div>
-                                          </div>
-                                      </div>
-                                  @endif--}}
+                    {{--@if($errors->any())
+                            <div class="row justify-content-center">
+                                <div class="col-md-11">
+                                    <div class="alert alert-danger" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">x</span>
+                                        </button>
+                                        {{ $errors->first() }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif--}}
 
                         @if($product->exists)
-                            <form action="{{ route('product-update', $product->id) }}" method="post" id="edit-cat">
+                            <form action="{{ route('product-update', $product->id) }}" method="post" id="edit-cat" enctype="multipart/form-data">
                                 @method('put')
-                                @else
-                                    <form action="{{ route('product-save') }}" method="post" id="edit-cat">
-                                        @endif
-                                        @csrf
-                                        <div class="add-new__form">
-                                            <div class="add-new__form-group">
-                                                {{--<input type="hidden" name="id_user" value="{{ $id }}">--}}
-                                                <input type="text" name="name" class="add-new__form-control form-control" placeholder="Название" value="{{ old('name', $product->name) }}">
+                        @else
+                            <form action="{{ route('product-store') }}" method="post" id="edit-cat" enctype="multipart/form-data">
+                        @endif
+                        @csrf
+                            <div class="add-new__form">
+                                <div class="add-new__form-group">
+                                    {{--<input type="hidden" name="id_user" value="{{ $id }}">--}}
+                                    <input type="text" name="name" class="add-new__form-control form-control" placeholder="Название" value="{{ old('name', $product->name) }}">
+                                </div>
 
-                                            </div>
-
-                                            <div class="add-new__form-group">
-                                                <div class="select add-new__select">
-                                                    <button class="btn select__btn add-new__select-btn" type="button">
-                                                        <span>
-
-                                                            @if($product->exists)
-                                                                @foreach($categoryList as $categoryOption)
-                                                                    @if($categoryOption->id == $product->category_id) {{ $categoryOption->id_title}} @endif
-                                                                @endforeach
-                                                            @else
-                                                                Выберите категорию
-                                                            @endif
-
-                                                        </span>
-                                                        <svg><use xlink:href="/Views/img/sprite.svg#drop"></use></svg>
-                                                    </button>
-                                                    <ul class="select__list add-new__select-list">
-
-                                                        @foreach($categoryList as $categoryOption)
-                                                            <li class="select__item add-new__select-item" data-value="{{ $categoryOption->id }}">{{ $categoryOption->id_title }}</li>
-                                                        @endforeach
-
-                                                    </ul>
-                                                    <input type="text" name="category_id" class="select__input" value="
-                                                    @if($product->exists)
-                                                    @foreach($categoryList as $categoryOption)
-                                                    @if($categoryOption->id == $product->category_id) {{ $categoryOption->id}} @endif
-                                                    @endforeach
-                                                    @endif
-" hidden/>
-                                                </div>
-                                            </div>
-
-                                            <div class="add-new__form-group">
-                                                <input type="text" name="brand" class="add-new__form-control form-control" placeholder="Бренд" value="{{ old('brand', $product->brand) }}">
-                                            </div>
-
-                                            <div class="add-new__form-group">
-                                                <input type="text" name="code" class="add-new__form-control form-control" placeholder="Код товара" value="{{ old('code', $product->code) }}">
-                                            </div>
-
-                                            <div class="add-new__form-group">
-                                                <input type="text" name="price" class="add-new__form-control form-control" placeholder="Цена" value="{{ old('price', $product->price) }}">
-                                            </div>
-
-                                            <div class="add-new__form-group">
-                                                <input type="text" name="color" class="add-new__form-control form-control" placeholder="Цвет" value="{{ old('quantity', $product->color) }}">
-                                            </div>
-
-                                            <div class="add-new__form-group mb-4">
-
-                                            <textarea name="description" id="text" class="add-new__form-control form-control textarea"
-                                            style="min-height: 100px;" placeholder="Описание">{{ old('description', $product->description) }}</textarea>
-                                            </div>
-                                            @if($product->exists)
-                                                <div class="add-new__form-group">
-                                                    <input type="text" name="created_at" class="add-new__form-control form-control" value="{{ $product->created_at }}">
-                                                </div>
-                                                <div class="add-new__form-group">
-                                                    <input type="text" name="updated_at" class="add-new__form-control form-control" value="{{ $product->updated_at }}">
-                                                </div>
+                                <div class="add-new__form-group">
+                                    <div class="select add-new__select">
+                                    <button class="btn select__btn add-new__select-btn" type="button">
+                                    <span>
+                                    @if($product->exists)
+                                        @foreach($categoryList as $categoryOption)
+                                            @if($categoryOption->id == $product->category_id)
+                                                {{ $categoryOption->id_title}}
                                             @endif
+                                        @endforeach
+                                    @else
+                                        Выберите категорию
+                                    @endif
 
-                                            <div class="add-new__form-group">
-                                                <input type="hidden" name="user_id" class="add-new__form-control form-control" value="{{ Auth::user()->id }}">
-                                            </div>
+                                    </span>
+                                    <svg><use xlink:href="/Views/img/sprite.svg#drop"></use></svg>
+                                    </button>
+                                    <ul class="select__list add-new__select-list">
 
-                                            <div class="add-new__form-group">
-                                                <input type="hidden" name="status" class="add-new__form-control form-control" value="1">
-                                            </div>
+                                    @foreach($categoryList as $categoryOption)
+                                        <li class="select__item add-new__select-item" data-value="{{ $categoryOption->id }}">{{ $categoryOption->id_title }}</li>
+                                    @endforeach
 
-                                        </div>
+                                    </ul>
+                                    <input type="text" name="category_id" class="select__input" value="
+                                        @if($product->exists)
+                                            @foreach($categoryList as $categoryOption)
+                                                @if($categoryOption->id == $product->category_id)
+                                                    {{ $categoryOption->id}}
+                                                @endif
+                                            @endforeach
+                                        @endif
+" hidden/>
+                                </div>
+                            </div>
 
-                                    </form>
+                            <div class="add-new__form-group">
+                                <input type="text" name="brand" class="add-new__form-control form-control" placeholder="Бренд" value="{{ old('brand', $product->brand) }}">
+                            </div>
+
+                            <div class="add-new__form-group">
+                                <input type="text" name="code" class="add-new__form-control form-control" placeholder="Код товара" value="{{ old('code', $product->code) }}">
+                            </div>
+
+                            <div class="add-new__form-group">
+                                <input type="text" name="price" class="add-new__form-control form-control" placeholder="Цена" value="{{ old('price', $product->price) }}">
+                            </div>
+
+                            <div class="add-new__form-group">
+                                <input type="text" name="new_price" class="add-new__form-control form-control" placeholder="Новая цена" value="{{ old('new_price', $product->new_price) }}">
+                            </div>
+
+                            <div class="add-new__form-group">
+                                <input type="text" name="color" class="add-new__form-control form-control" placeholder="Цвет" value="{{ old('color', $product->color) }}">
+                            </div>
+
+                            <div class="add-new__form-group mb-4">
+
+                                <textarea name="description" id="text" class="add-new__form-control form-control textarea"
+                                style="min-height: 100px;" placeholder="Описание">{{ old('description', $product->description) }}</textarea>
+                            </div>
+
+                            @if ($product->photo)
+                                <div>
+                                    <img src="{{ asset($product->photo) }}">
+                                </div>
+                            @endif
+
+                            @if($product->exists)
+                                <div class="add-new__form-group">
+                                    <input type="text" name="created_at" class="add-new__form-control form-control" value="{{ $product->created_at }}">
+                                </div>
+                                <div class="add-new__form-group">
+                                    <input type="text" name="updated_at" class="add-new__form-control form-control" value="{{ $product->updated_at }}">
+                                </div>
+                            @endif
+
+                            <div class="add-new__form-group">
+                                <input type="hidden" name="user_id" class="add-new__form-control form-control" value="{{ Auth::user()->id }}">
+                            </div>
+
+                            <div class="add-new__form-group">
+                                <input type="hidden" name="status" class="add-new__form-control form-control" value="1">
+                            </div>
+
+                            <h3 class="add-new__form-title mb-4">Добавить фото</h3>
+                            <!--<div class="add-new__form-group">
+                            <input type="file" name="photo[]" placeholder="Выбрать изображение" id="photo" multiple>
+                            </div>-->
+
+                            <div class="add-new__form-group mb-4">
+                                <div class="drop-file drop-zone image">
+                                    <label class="add-new__drop-zone">
+                                    <input type="file" name="photo" id="photo" class="drop-zone__input"
+                                        accept=".png, .jpg, .jpeg, .bmp" hidden/>
+                                    <p>Перетащите фото сюда или <span>выберите файл</span></p>
+                                       <!-- <div class="btn btn__drop">Загрузить</div> -->
+                                    </label>
+                                    <div class="drop-zone__thumb">
+                                    <a href="#" class="drop-zone__remove logo-btn"><svg>
+                                    <use xlink:href="/img/sprite.svg#close"></use>
+                                    </svg></a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </form>
                     </div>
                 </div>
             </div>

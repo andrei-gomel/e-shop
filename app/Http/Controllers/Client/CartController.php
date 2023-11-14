@@ -131,8 +131,10 @@ class CartController extends Controller
      */
     public static function clear()
     {
-        if (session('products') !== null) {
-            Session::forget('products');
+        //if (session('products') !== null)
+        if (session()->has('products'))
+        {
+            session()->forget('products');
         }
     }
 

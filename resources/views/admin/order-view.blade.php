@@ -183,7 +183,7 @@
             <div class="page-header">
                 <div class="_container">
                     <div class="page-header__body">
-                        <h1 class="page-header__title">{{ __('Просмотр заказа №') }}{{ $order[0]->id }}</h1>
+                        <h1 class="page-header__title">{{ __('Админка / Просмотр заказа №') }}{{ $order[0]->id }}</h1>
                         <div class="page-header__actions">
 
                             <div class="page-header__list">
@@ -214,6 +214,9 @@
             <!-- Page header -->
 
             <div class="page-table mt-3">
+                <h3 class="add-new__form-title mb-4">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Информация о клиенте:
+                </h3>
                 <div class="table-responsive">
                     <table class="table with-action">
                         <thead>
@@ -223,7 +226,6 @@
                             <td>Телефон</td>
                             <td>Статус заказа</td>
                             <td>Стоимость</td>
-
                             <td>Менеджер</td>
                             <td>Действие</td>
                         </tr>
@@ -235,7 +237,6 @@
                                     <td>{{ $order[0]->user_phone }}</td>
                                     <td>{{ \App\Models\Order::$status[$order[0]->status] }}</td>
                                     <td>{{ $order[0]->total_price }}</td>
-
                                     <td>{{ $order[0]->manager }}</td>
                                     <td>
                                         <div>
@@ -252,6 +253,9 @@
             </div>
 
             <div class="page-table mt-3">
+                <h3 class="add-new__form-title mb-4">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Информация о заказе:
+                </h3>
                 <div class="table-responsive">
                     <table class="table with-action">
                         <thead>

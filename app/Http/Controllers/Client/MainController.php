@@ -12,11 +12,7 @@ class MainController extends Controller
 {
     public function index()
     {
-        //$products = Product::all();
-
-        $products1 = Product::select('name')->whereIn('id', [1,2,4])->get();
-
-        dd($products1->pluck('name')->join(', '));
+        $products = Product::all();
 
         $categories = Category::where('parent_id', 1)->get();
 

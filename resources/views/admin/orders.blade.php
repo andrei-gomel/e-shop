@@ -238,7 +238,6 @@
                                     <li class="select__item filter-select__item" data-value="3">Закрыт</li>
                                 </ul>
                                 <input type="text" name="status" class="select__input" value="" hidden/>
-
                             </div>
 
                             <div class="select filter-select">

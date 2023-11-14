@@ -7,8 +7,9 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
-use App\Notifications\OrderCreateNotification;
+//use App\Notifications\OrderCreateNotification;
 use App\Notifications\UserOrderNotification;
+use App\Jobs\OrderNotificationJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
@@ -45,9 +46,7 @@ class OrderController extends Controller
             ->get();
 
         // Получаем менеджера, который управляет заказом
-        $manager = User::select('name')->find($order[0]->manager_id);
-
-        $order[0]->manager = $manager->name;
+        $this->getManager($order);
 
         return view('client.edit-order',  compact('order'));
     }
@@ -65,9 +64,9 @@ class OrderController extends Controller
                 ->get();
 
             // Получаем менеджера, который управляет заказом
-            $manager = User::select('name')->find($order[0]->manager_id);
 
-            $order[0]->manager = $manager->name;
+            $this->getManager($order);
+
         }
 
         if (Auth::user()->role === 1)
@@ -81,16 +80,12 @@ class OrderController extends Controller
 
             // Получаем менеджера, который управляет заказом
 
-            $manager = User::select('name')->find($order[0]->manager_id);
+            $this->getManager($order);
 
-            $order[0]->manager = $manager->name;
         }
-
-        //dd($order);
 
         return view('client.order-view', compact('order'));
     }
-
 
     /**
      * @param Request $request
@@ -108,24 +103,13 @@ class OrderController extends Controller
         $products = Product::select('name')->whereIn('id', array_keys($array_product))->get();
 
         /*
-
         $products = DB::table('products')
             ->select('name')
             ->whereIn('id', array_keys($array_product))
             ->get();
 */
 
-
         $products_name = $products->pluck('name')->join(', ');
-
-        /*$products_name = '';
-
-        foreach ($products as $item)
-        {
-            $products_name .= $item->name . ', ';
-        }
-
-        $products_name = rtrim($products_name, ', ');*/
 
         foreach ($array_product as $key => $value)
         {
@@ -147,24 +131,18 @@ class OrderController extends Controller
         if ($order)
         {
             $result = $order->products()->sync($array_data);
-
-            /*
-
-            for ($i = 0; $i < $n; $i++)
-            {
-                $res = $order->products()->attach($keys[$i], ['count' => $values[$i]]);
-            }
-
-            */
         }
 
         $categories = Category::where('parent_id', 1)->get();
 
         if($result)
         {
-            $user = Auth::user();
+            //$user = Auth::user();
 
-            $user->notify(new UserOrderNotification($order, $products_name));
+            //$user->notify(new UserOrderNotification($order, $products_name));
+
+            // Отправляем отправку пользователю емайл о заказе в Jobs(Queue)
+            dispatch(new OrderNotificationJob($order, $products_name));
 
             $notification = [
                 'message' => 'Ваш заказ успешно оформлен!',
@@ -212,6 +190,67 @@ class OrderController extends Controller
 
             return back()->with($notification)
                 ->withInput();
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $id = intval($id);
+
+        $data = $request->only('address', 'comment', 'delivery', 'status');
+
+        $order = Order::whereId($id)->first();
+
+        $data['manager_id'] = Auth::user()->id;
+
+        if(empty($order))
+        {
+            $notification = [
+                'message' => 'Запись не найдена',
+                'alert-type' => 'warning',
+            ];
+
+            return redirect()
+                    ->route('orders-index')
+                    ->with($notification);
+        }
+
+        $result = $order->update($data);
+
+        if ($result)
+        {
+            $notification = [
+                'message' => 'Изменения сохранены',
+                'alert-type' => 'success',
+            ];
+
+            return redirect()
+                    ->route('client-orders')
+                    ->with($notification);
+        }
+        else
+        {
+            $notification = [
+                'message' => 'Ошибка сохранения',
+                'alert-type' => 'warning',
+            ];
+
+            return back()
+                    ->with($notification)
+                    ->withInput();
+        }
+    }
+
+    public function getManager($order)
+    {
+        if($order[0]->manager_id === Null)
+        {
+            $order[0]->manager = 'Anonimus';
+        }
+        else
+        {
+            $manager = User::select('name')->find($order[0]->manager_id);
+            $order[0]->manager = $manager->name;
         }
     }
 }

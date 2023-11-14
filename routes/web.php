@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Client\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 /*Route::get('/admin/login', function (){
         return view('admin.login');
 })->name('admin-login');*/
+
+Route::get('/test', TestController::class);
 
 //Route::post('/admin/login', [\App\Http\Controllers\Admin\LoginController::class, 'login']);
 
@@ -34,14 +37,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('/client/destroy/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'destroy'])->name('admin-client-destroy');
     Route::get('/product', [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('product-index');
     Route::get('/product/create', [\App\Http\Controllers\Admin\ProductController::class, 'create'])->name('product-create');
-    Route::post('/product/save', [\App\Http\Controllers\Admin\ProductController::class, 'store'])->name('product-save');
+    Route::post('/product/save', [\App\Http\Controllers\Admin\ProductController::class, 'store'])->name('product-store');
     Route::get('/product/edit/{id}', [\App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('product-edit');
     Route::put('/product/update/{id}', [\App\Http\Controllers\Admin\ProductController::class, 'update'])->name('product-update');
     Route::get('/product/destroy/{id}', [\App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('product-destroy');
+    Route::post('/product/filterbyoption', [\App\Http\Controllers\Admin\ProductController::class, 'filterbyoption'])->name('product-filterbyoption');
     Route::get('/product/{id}', [\App\Http\Controllers\Admin\ProductController::class, 'show'])->name('product-show');
     Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders-index');
     Route::post('/orders/filterbyoption', [\App\Http\Controllers\Admin\OrderController::class, 'filterByOption'])->name('filterbyoption');
-    Route::get('/order/view/{id}', [\App\Http\Controllers\Admin\OrderController::class, 'view'])->name('order-view');
+    Route::get('/order/{id}', [\App\Http\Controllers\Admin\OrderController::class, 'view'])->name('order-view');
     Route::get('/order/edit/{id}', [\App\Http\Controllers\Admin\OrderController::class, 'edit'])->name('order-edit');
     Route::get('/order/destroy/{id}', [\App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('order-destroy');;
     Route::put('/order/update/{id}', [\App\Http\Controllers\Admin\OrderController::class, 'update'])->name('order-update');
@@ -65,8 +69,9 @@ Route::view('/client/cabinet', 'client.index')->middleware('auth')->name('client
 
 Route::get('/client/orders', [\App\Http\Controllers\Client\OrderController::class, 'index'])->middleware('auth')->name('client-orders');
 Route::get('/client/orders/edit/{id}', [\App\Http\Controllers\Client\OrderController::class, 'edit'])->middleware('auth')->name('client-orders-edit');
-Route::get('/client/orders/view/{id}', [\App\Http\Controllers\Client\OrderController::class, 'view'])->middleware('auth')->name('client-orders-view');
-Route::get('/client/orders/delete/{id}', [\App\Http\Controllers\Client\OrderController::class, 'destroy'])->middleware('auth')->name('client-order-delete');
+Route::get('/client/orders/{id}', [\App\Http\Controllers\Client\OrderController::class, 'view'])->middleware('auth')->name('client-orders-view');
+Route::get('/client/order/delete/{id}', [\App\Http\Controllers\Client\OrderController::class, 'destroy'])->middleware('auth')->name('client-order-delete');
+Route::put('/client/order/update/{id}', [\App\Http\Controllers\Client\OrderController::class, 'update'])->middleware(['auth', 'manager'])->name('client-order-update');
 Route::get('/client/setting', [\App\Http\Controllers\Client\SettingController::class, 'index'])->middleware('auth')->name('client-setting');
 Route::put('/client/update/{id}', [\App\Http\Controllers\Client\SettingController::class, 'update'])->middleware('auth')->name('client-update-setting');
 

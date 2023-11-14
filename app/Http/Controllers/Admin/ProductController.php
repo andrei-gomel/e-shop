@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\BaseController;
 use App\Http\Requests\ProductCreateRequest;
 use App\Models\Category;
 use App\Models\Product;
@@ -11,18 +11,21 @@ use App\Repositories\CategoryRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
-class ProductController extends Controller
+class ProductController extends BaseController
 {
     private $categoryRepository;
     private $productRepository;
+    //private $sortOption = ['order by brand', 'order by category', 'order by price ASC'];
 
     public function __construct()
     {
-
         $this->productRepository = app(ProductRepository::class);
+
         $this->categoryRepository = app(CategoryRepository::class);
 
+        parent::__construct();
     }
 
     public function index()
@@ -33,26 +36,54 @@ class ProductController extends Controller
         //$products = Product::all()->paginate(25);
         //$products = Product::all();
 
-        $products = DB::table('products')
+        //$products = Product::orderBy('price', 'DESC')->get();
+        $products = Product::
+            select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
+            ->join('categories', 'categories.id', '=', 'products.category_id')
+            ->join('users', 'users.id', '=', 'products.user_id')
+            ->orderBy('price', 'desc')
+            ->get();
+
+        //dd($products);
+
+        /*$products = DB::table('products')
             ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
             ->join('categories', 'categories.id', '=', 'products.category_id')
             ->join('users', 'users.id', '=', 'products.user_id')
-            ->get();
+            ->orderBy('price', 'ASC')
+            ->get();*/
 
         //dd($products);
 
         return view('admin.product', compact('products'));
     }
 
-    public function show()
+    public function show($id)
     {
+        $product = $this->productRepository->getEdit($id);
+
         /*$country = User::find($id)->country;
 
         $products->category = $country->name;*/
+
+        // Получаем категорию продукта
+        $category = Product::find($id)->category;
+
+        $product->category = $category->title;
+
+        // Получаем юзера, создавшего продукт
+        $user = Product::find($id)->user;
+
+        $product->user_name = $user->name;
+
+        dd($product);
+
+        return 'Просмотр товара ID=' . $id;
     }
 
     public function create(CategoryRepository $categoryRepository)
     {
+
         $product = new Product();
 
         $categoryList = $this->categoryRepository->getForComboBox();
@@ -67,7 +98,7 @@ class ProductController extends Controller
     {
         $categoryList = $this->categoryRepository->getForComboBox();
 
-        //$product = Product::find($id);
+        //$product = Product::findOrFail($id);
         $product = $this->productRepository->getEdit($id);
 
         if (empty($product)) {
@@ -80,8 +111,6 @@ class ProductController extends Controller
                 ->withInput();
         }
 
-        //dd($product);
-
         // Получаем категорию продукта
         $category = Product::find($id)->category;
 
@@ -92,11 +121,7 @@ class ProductController extends Controller
 
         $product->user_name = $user->name;
 
-        //dd($product);
-
-        if (empty($product)) {
-            abort(404);
-        }
+        //$url = Storage::url($product->photo);
 
         return view('admin.add-product', compact('product', 'categoryList'));
     }
@@ -104,7 +129,15 @@ class ProductController extends Controller
     public function store(ProductCreateRequest $request)
     {
         $data = $request->input();
-        //dd($data);
+
+        if ($request->hasFile('photo'))
+        {
+            $imageData = $request->file('photo');
+
+            $path = $this->service->storeImage($imageData);
+
+            $data['photo'] = $path;
+        }
 
         $item = (new Product())->create($data);
 
@@ -134,11 +167,20 @@ class ProductController extends Controller
 
         if (empty($item)) {
             return back()
-                ->withErrors(['msg'=>"Запись id=[{$id}] не найдена."])
+                ->withErrors(['msg'=>"Запись ID={$id} не найдена."])
                 ->withInput();
         }
 
-        $data = $request->all();
+        $data = $request->input();
+
+        if ($request->hasFile('photo'))
+        {
+            $imageData = $request->file('photo');
+
+            $path = $this->service->storeImage($imageData);
+
+            $data['photo'] = $path;
+        }
 
         $result = $item->update($data);
 
@@ -164,8 +206,61 @@ class ProductController extends Controller
         }
     }
 
-    public function destroy()
+    public function destroy($id)
     {
+        return 'Удаление товара ID=' . $id;
+    }
 
+    public function filterbyoption(Request $request)
+    {
+        $value = $request->input('sort_by');
+
+        switch ($value) {
+            case '0':
+                $products = DB::table('products')
+                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
+                    ->join('categories', 'categories.id', '=', 'products.category_id')
+                    ->join('users', 'users.id', '=', 'products.user_id')
+                    ->orderByRaw('brand')
+                    ->get();
+                break;
+
+            case '1':
+                $products = DB::table('products')
+                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
+                    ->join('categories', 'categories.id', '=', 'products.category_id')
+                    ->join('users', 'users.id', '=', 'products.user_id')
+                    ->orderBy('cat_name')
+                    ->get();
+                break;
+
+            case '2':
+                $products = DB::table('products')
+                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
+                    ->join('categories', 'categories.id', '=', 'products.category_id')
+                    ->join('users', 'users.id', '=', 'products.user_id')
+                    ->orderBy('price', 'ASC')
+                    ->get();
+                break;
+
+            case '3':
+                $products = DB::table('products')
+                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
+                    ->join('categories', 'categories.id', '=', 'products.category_id')
+                    ->join('users', 'users.id', '=', 'products.user_id')
+                    ->orderBy('price', 'DESC')
+                    ->get();
+                break;
+
+            default:
+                $products = DB::table('products')
+                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
+                    ->join('categories', 'categories.id', '=', 'products.category_id')
+                    ->join('users', 'users.id', '=', 'products.user_id')
+                    ->get();
+                break;
+        }
+
+        return view('admin.product', compact('products'));
     }
 }
