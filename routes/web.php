@@ -29,7 +29,7 @@ Route::get('/', [\App\Http\Controllers\Client\MainController::class, 'index'])->
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function (){
     //  \Illuminate\Support\Facades\Gate::authorize('view-protected-part');
     Route::get('/clients', [\App\Http\Controllers\Admin\ClientController::class, 'index'])->name('admin-clients');
-    Route::get('/client/view/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'view']);
+    Route::get('/client/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'view'])->name('client-view');
     Route::get('/client/create', [\App\Http\Controllers\Admin\ClientController::class, 'create'])->name('client-create');
     Route::post('/client/save', [\App\Http\Controllers\Admin\ClientController::class, 'store'])->name('client-save');
     Route::put('/client/update/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'update'])->name('client-update');

@@ -61,6 +61,6 @@ class ProductRepository extends CoreRepository
 
     public function getEdit($id)
     {
-        return $this->startConditions()->findOrFail($id);
+        return $this->startConditions()->find($id);
     }
 }

@@ -278,7 +278,7 @@
                               <a href="{{ route('client-edit', $item->id) }}">
                                  <svg><use xlink:href="/img/sprite.svg#arrow"></use></svg></a>
                               <a href="/admin/client/destroy/{{ $item->id }}"><svg><use xlink:href="/img/sprite.svg#close"></use></svg></a>
-                              <a href="/admin/client/view/{{ $item->id }}"><svg><use xlink:href="/img/sprite.svg#home"></use></svg></a>
+                              <a href="{{ route('client-view', $item->id) }}"><svg><use xlink:href="/img/sprite.svg#home"></use></svg></a>
                            </div>
                         </td>
                      </tr>

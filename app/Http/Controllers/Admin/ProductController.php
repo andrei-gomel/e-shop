@@ -34,11 +34,10 @@ class ProductController extends BaseController
         //dd($paginator);
 
         //$products = Product::all()->paginate(25);
-        //$products = Product::all();
 
-        //$products = Product::orderBy('price', 'DESC')->get();
-        $products = Product::
-            select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
+        $products = Product::select('products.id', 'products.name', 'products.category_id', 'products.brand',
+            'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id',
+            'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
             ->join('categories', 'categories.id', '=', 'products.category_id')
             ->join('users', 'users.id', '=', 'products.user_id')
             ->orderBy('price', 'desc')
@@ -83,7 +82,6 @@ class ProductController extends BaseController
 
     public function create(CategoryRepository $categoryRepository)
     {
-
         $product = new Product();
 
         $categoryList = $this->categoryRepository->getForComboBox();
@@ -91,25 +89,27 @@ class ProductController extends BaseController
         //$categories = Category::all();
 
         return view('admin.add-product', compact('categoryList', 'product'));
-        //return view('admin.add-new-btn', compact('categoryList', 'product', 'client_id'));
     }
 
-    public function edit($id, CategoryRepository $categoryRepository)
+    public function edit($id)
     {
-        $categoryList = $this->categoryRepository->getForComboBox();
+        $id = intval($id);
 
         //$product = Product::findOrFail($id);
         $product = $this->productRepository->getEdit($id);
+        //dd($product);
 
-        if (empty($product)) {
+        if ($product == null) {
             $notification = [
-                'message' => 'Запись id='.$id.' не найдена',
+                'message' => 'Товар ID='.$id.' не найден',
                 'alert-type' => 'warning',
             ];
 
             return back()->with($notification)
                 ->withInput();
         }
+
+        $categoryList = $this->categoryRepository->getForComboBox();
 
         // Получаем категорию продукта
         $category = Product::find($id)->category;
@@ -249,6 +249,24 @@ class ProductController extends BaseController
                     ->join('categories', 'categories.id', '=', 'products.category_id')
                     ->join('users', 'users.id', '=', 'products.user_id')
                     ->orderBy('price', 'DESC')
+                    ->get();
+                break;
+
+            case '4':
+                $products = DB::table('products')
+                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
+                    ->join('categories', 'categories.id', '=', 'products.category_id')
+                    ->join('users', 'users.id', '=', 'products.user_id')
+                    ->orderBy('id', 'DESC')
+                    ->get();
+                break;
+
+            case '4':
+                $products = DB::table('products')
+                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
+                    ->join('categories', 'categories.id', '=', 'products.category_id')
+                    ->join('users', 'users.id', '=', 'products.user_id')
+                    ->orderBy('id', 'ASC')
                     ->get();
                 break;
 

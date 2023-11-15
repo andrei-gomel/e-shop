@@ -38,12 +38,11 @@ class ClientController extends Controller
     {
         $id = intval($id);
 
-        $user = DB::table('users')->where('id', $id)->first();
-        //$user = User::find($id);
+        $user = User::find($id);
 
-        if (empty($user)) {
+        if ($user === null) {
             $notification = [
-                'message' => 'Клиент id='.$id.' не найден',
+                'message' => 'Клиент ID='.$id.' не найден',
                 'alert-type' => 'warning',
             ];
 
@@ -84,7 +83,7 @@ class ClientController extends Controller
 
         if ($user === null) {
             $notification = [
-                'message' => 'Клиент id='.$id.' не найден',
+                'message' => 'Клиент ID='.$id.' не найден',
                 'alert-type' => 'warning',
             ];
 

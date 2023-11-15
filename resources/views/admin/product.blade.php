@@ -232,7 +232,8 @@
                            <li class="select__item filter-select__item" data-value="1">По категории</li>
                            <li class="select__item filter-select__item" data-value="2">Сначала дешевые</li>
                            <li class="select__item filter-select__item" data-value="3">Сначала дорогие</li>
-                           <li class="select__item filter-select__item" data-value="4">Статус</li>
+                           <li class="select__item filter-select__item" data-value="4">Новые вверху</li>
+                           <li class="select__item filter-select__item" data-value="5">Новые внизу</li>
                         </ul>
                         <input type="text" name="sort_by" class="select__input" value="" hidden/>
                      </div>
