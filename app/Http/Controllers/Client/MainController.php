@@ -12,7 +12,11 @@ class MainController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        //products = Product::all();
+
+        $products = \Cache::remember('products', 300, function(){
+            return Product::all();
+        });
 
         $categories = Category::where('parent_id', 1)->get();
 
