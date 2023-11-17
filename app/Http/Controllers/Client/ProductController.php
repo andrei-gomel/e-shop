@@ -13,7 +13,23 @@ class ProductController extends Controller
     {
         $id = intval($id);
 
+        $data = [];
+        $history = [];
+
         $product = Product::findOrFail($id);
+
+        $data[] = $product;
+
+        if(isset($_COOKIE['history']))
+        {
+            $history = json_decode($_COOKIE['history']);
+            setcookie('history', '', -1);
+        }
+
+        $history[] = $data[0];
+        setcookie('history', json_encode($history), time() + 300);
+
+       //dd(json_decode($_COOKIE['history']));
 
         if ($product->new_price !== null)
         {

@@ -141,7 +141,15 @@ class ProductController extends BaseController
 
         $item = (new Product())->create($data);
 
-        if($item) {
+        if($item)
+        {
+            if(\Cache::has('products'))
+            {
+                \Cache::forget('products');
+            }
+            \Cache::forever('products', function(){
+                    return Product::all();
+            });
             $notification = [
                 'message' => 'Товар добавлен',
                 'alert-type' => 'success',
@@ -163,6 +171,8 @@ class ProductController extends BaseController
 
     public function update(ProductCreateRequest $request, $id)
     {
+        $id = intval($id);
+
         $item = $this->productRepository->getEdit($id);
 
         if (empty($item)) {
@@ -172,6 +182,7 @@ class ProductController extends BaseController
         }
 
         $data = $request->input();
+        //dd($data);
 
         if ($request->hasFile('photo'))
         {
@@ -184,7 +195,17 @@ class ProductController extends BaseController
 
         $result = $item->update($data);
 
-        if ($result) {
+        if ($result)
+        {
+            if(\Cache::has('products'))
+            {
+                \Cache::forget('products');
+            }
+
+            \Cache::forever('products', function(){
+                    return Product::all();
+            });
+
             $notification = [
                 'message' => 'Изменения сохранены',
                 'alert-type' => 'success',

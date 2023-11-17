@@ -30,9 +30,9 @@ class ProductCreateRequest extends FormRequest
             'brand'       => 'required|min:5|max:50',
             'code'        => 'required|min:5|max:25',
             'price'       => 'required|integer',
-            'new_price'   => 'integer',
-            'color'       => 'required|min:5|max:25',
-            'description' => 'string|min:10|max:200',
+            'new_price'   => 'integer|nullable',
+            'color'       => 'required|min:3|max:25',
+            'description' => 'required|string|min:10|max:255',
             'photo'       => 'image|mimes:jpg,png,jpeg,bmp|max:2048',
         ];
     }
