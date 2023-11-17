@@ -28,8 +28,10 @@ class MainController extends Controller
         $orders = Order::all();
         $countOrders = count($orders);
 
+        $summ = Order::sum('total_price');
+
         $user = Auth::user();
 
-        return view('admin.index', compact('countCategory', 'countOrders', 'countProducts', 'countUsers'));
+        return view('admin.index', compact('countCategory', 'countOrders', 'countProducts', 'countUsers', 'summ'));
     }
 }

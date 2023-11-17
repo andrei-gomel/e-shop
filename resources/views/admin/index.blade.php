@@ -203,15 +203,17 @@
          <div class="statistic">
             <div class="_container">
                <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="col-lg-4 col-md-4 col-sm-6">
                      <div class="tile tile-primary">
-                        <div class="tile-heading">Общее количество категорий</div>
+                        <div class="tile-heading">Общая сумма заказов</div>
                         <div class="tile-body">
-                           <div class="percent _up">+12%</div>
-                           <h2 class="pull-right">{{ $countCategory }}</h2>
+                           <div class="percent _up">+15%</div>
+                           <h2 class="pull-right _small">{{ $summ }} рублей</h2>
                         </div>
                      </div>
                   </div>
+
+
                   <div class="col-lg-4 col-md-4 col-sm-6">
                      <div class="tile tile-primary">
                         <div class="tile-heading">Общее количество товаров</div>
@@ -234,17 +236,17 @@
                      <div class="tile tile-primary">
                         <div class="tile-heading">Общее количество пользователей</div>
                         <div class="tile-body">
-                           <div class="percent _down">-12%</div>
+                           <div class="percent _up">+5%</div>
                            <h2 class="pull-right">{{ $countUsers }}</h2>
                         </div>
                      </div>
                   </div>
-                  <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="col-lg-4 col-md-4 col-sm-6">
                      <div class="tile tile-primary">
-                        <div class="tile-heading">Выбранный тариф</div>
+                        <div class="tile-heading">Общее количество категорий</div>
                         <div class="tile-body">
-                           <div class="percent">до 10.10.2022</div>
-                           <h2 class="pull-right _small">Видеоконсультант</h2>
+                           <!-- <div class="percent _up">+12%</div> -->
+                           <h2 class="pull-right">{{ $countCategory }}</h2>
                         </div>
                      </div>
                   </div>
