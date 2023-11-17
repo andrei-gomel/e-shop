@@ -24,8 +24,7 @@ class MainController extends Controller
         $users = User::all();
         $countUsers = count($users);
 
-        $orders = Order::all();
-        $countOrders = count($orders);
+        $countOrders = count(DB::table('orders')->get());
 
         $summ = DB::table('orders')->sum('total_price');
 
