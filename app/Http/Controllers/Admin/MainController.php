@@ -1,10 +1,9 @@
 <?php
 
-
 namespace App\Http\Controllers\Admin;
 
-
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
@@ -28,7 +27,7 @@ class MainController extends Controller
         $orders = Order::all();
         $countOrders = count($orders);
 
-        $summ = Order::sum('total_price');
+        $summ = DB::table('orders')->sum('total_price');
 
         $user = Auth::user();
 
