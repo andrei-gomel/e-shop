@@ -65,8 +65,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
 });
 
-Route::view('/client/cabinet', 'client.index')->middleware('auth')->name('client-cabinet');
+Route::group(['prefix' => 'manager', 'middleware' => ['auth', 'manager']], function (){
+    Route::get('/product', [\App\Http\Controllers\Manager\ProductController::class, 'index'])->name('manager-product-index');
+    Route::get('/product/create', [\App\Http\Controllers\Manager\ProductController::class, 'create'])->name('manager-product-create');
+    Route::post('/product/save', [\App\Http\Controllers\Manager\ProductController::class, 'store'])->name('manager-product-store');
+    Route::get('/product/edit/{id}', [\App\Http\Controllers\Manager\ProductController::class, 'edit'])->name('manager-product-edit');
+    Route::put('/product/update/{id}', [\App\Http\Controllers\Manager\ProductController::class, 'update'])->name('manager-product-update');
+    Route::get('/product/destroy/{id}', [\App\Http\Controllers\Manager\ProductController::class, 'destroy'])->name('manager-product-destroy');
+    Route::post('/product/filterbyoption', [\App\Http\Controllers\Manager\ProductController::class, 'filterbyoption'])->name('manager-product-filterbyoption');
+    Route::get('/product/{id}', [\App\Http\Controllers\Manager\ProductController::class, 'show'])->name('manager-product-show');
+});
 
+Route::view('/client/cabinet', 'client.index')->middleware('auth')->name('client-cabinet');
 Route::get('/client/orders', [\App\Http\Controllers\Client\OrderController::class, 'index'])->middleware('auth')->name('client-orders');
 Route::get('/client/orders/edit/{id}', [\App\Http\Controllers\Client\OrderController::class, 'edit'])->middleware('auth')->name('client-orders-edit');
 Route::get('/client/orders/{id}', [\App\Http\Controllers\Client\OrderController::class, 'view'])->middleware('auth')->name('client-orders-view');

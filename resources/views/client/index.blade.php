@@ -61,25 +61,26 @@
                      Главная
                   </a>
                </li>
+               @if(Auth::user()->role === 1)
                <li class="header-nav__video">
-                  <a href="/client/orders">
+                  <a href="{{ route('manager-product-index') }}">
                      <svg>
                         <use xlink:href="/img/nav.svg#tarif"></use>
+                     </svg>
+                         Товары
+                  </a>
+               </li>
+               @endif
+               <li class="header-nav__setting">
+                  <a href="/client/orders">
+                     <svg>
+                        <use xlink:href="/img/nav.svg#setting"></use>
                      </svg>
                      @if(Auth::user()->role === 1)
                          Заказы
                      @elseif(Auth::user()->role === 2)
                          Мои заказы
                      @endif
-                  </a>
-               </li>
-
-               <li class="header-nav__setting">
-                  <a href="/client/setting">
-                     <svg>
-                        <use xlink:href="/img/nav.svg#setting"></use>
-                     </svg>
-                     Настройки
                   </a>
                </li>
                <li class="header-nav__math">

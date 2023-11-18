@@ -56,10 +56,6 @@
 </head>
 
 <body>
-@cannot('view-protected-part')
-    <h4>Доступ запрещен</h4>
-@endcan
-@can('view-protected-part')
     <div id="container">
 
         <nav class="header-nav">
@@ -209,7 +205,7 @@
                     <div class="_container">
                         <div class="add-new__header-body">
                             @if($product->exists)
-                                <h3 class="add-new__title">{{ __('Редактирование товара ID=')$product->id }}</h3>
+                                <h3 class="add-new__title">{{ __('Редактирование товара ID=') }}{{$product->id}}</h3>
                             @else
                                 <h3 class="add-new__title">{{ __('Добавление товара') }}</h3>
                             @endif
@@ -385,6 +381,5 @@
 
     <!-- Custom -->
     <script src="/js/main.js"></script>
-@endcan
 </body>
 </html>
