@@ -12,6 +12,7 @@ use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends BaseController
 {
@@ -97,7 +98,6 @@ class ProductController extends BaseController
 
         //$product = Product::findOrFail($id);
         $product = $this->productRepository->getEdit($id);
-        //dd($product);
 
         if ($product == null) {
             $notification = [
@@ -130,19 +130,19 @@ class ProductController extends BaseController
     {
         $data = $request->input();
 
-        if ($request->hasFile('photo'))
+        $res = (new Product())->create($data);
+
+        if($res)
         {
-            $imageData = $request->file('photo');
+            if ($request->hasFile('photo'))
+            {
+                $imageData = $request->file('photo');
 
-            $path = $this->service->storeImage($imageData);
+                $path = $this->service->storeImage($imageData);
 
-            $data['photo'] = $path;
-        }
+                $data['photo'] = $path;
+            }
 
-        $item = (new Product())->create($data);
-
-        if($item)
-        {
             if(\Cache::has('products'))
             {
                 \Cache::forget('products');
@@ -150,6 +150,7 @@ class ProductController extends BaseController
             \Cache::forever('products', function(){
                     return Product::all();
             });
+
             $notification = [
                 'message' => 'Товар добавлен',
                 'alert-type' => 'success',
@@ -173,9 +174,9 @@ class ProductController extends BaseController
     {
         $id = intval($id);
 
-        $item = $this->productRepository->getEdit($id);
+        $product = $this->productRepository->getEdit($id);
 
-        if (empty($item)) {
+        if (empty($product)) {
             return back()
                 ->withErrors(['msg'=>"Запись ID={$id} не найдена."])
                 ->withInput();
@@ -184,19 +185,19 @@ class ProductController extends BaseController
         $data = $request->input();
         //dd($data);
 
-        if ($request->hasFile('photo'))
-        {
-            $imageData = $request->file('photo');
-
-            $path = $this->service->storeImage($imageData);
-
-            $data['photo'] = $path;
-        }
-
-        $result = $item->update($data);
+        $result = $product->update($data);
 
         if ($result)
         {
+            if ($request->hasFile('photo'))
+            {
+                $imageData = $request->file('photo');
+
+                $path = $this->service->storeImage($imageData);
+
+                $data['photo'] = $path;
+            }
+
             if(\Cache::has('products'))
             {
                 \Cache::forget('products');
@@ -229,6 +230,11 @@ class ProductController extends BaseController
 
     public function destroy($id)
     {
+        if (! Gate::allows('view-protected-part'))
+        {
+            abort(403);
+        }
+
         return 'Удаление товара ID=' . $id;
     }
 
