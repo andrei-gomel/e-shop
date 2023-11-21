@@ -131,14 +131,7 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
                 $data['photo'] = $path;
             }
 
-            if(\Cache::has('products'))
-            {
-                \Cache::forget('products');
-            }
-
-            \Cache::rememberForever('products', function () {
-                return Product::all();
-            });
+            $this->storeProductInCache();
 
             $notification = [
                 'message' => 'Товар добавлен',
@@ -186,14 +179,7 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
                     $data['photo'] = $path;
                 }
 
-            if(\Cache::has('products'))
-            {
-                \Cache::forget('products');
-            }
-
-            \Cache::rememberForever('products', function () {
-                return Product::all();
-            });
+            $this->storeProductInCache();
 
             $notification = [
                 'message' => 'Изменения сохранены',
@@ -223,72 +209,66 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
 
     public function filterbyoption(Request $request)
     {
+        $defaultQuery = DB::table('products')
+        ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
+        ->join('categories', 'categories.id', '=', 'products.category_id')
+        ->join('users', 'users.id', '=', 'products.user_id');
+
         $value = $request->input('sort_by');
 
         switch ($value) {
             case '0':
-                $products = DB::table('products')
-                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
-                    ->join('categories', 'categories.id', '=', 'products.category_id')
-                    ->join('users', 'users.id', '=', 'products.user_id')
+                $products = $defaultQuery
                     ->orderByRaw('brand')
                     ->get();
                 break;
 
             case '1':
-                $products = DB::table('products')
-                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
-                    ->join('categories', 'categories.id', '=', 'products.category_id')
-                    ->join('users', 'users.id', '=', 'products.user_id')
+                $products = $defaultQuery
                     ->orderBy('cat_name')
                     ->get();
                 break;
 
             case '2':
-                $products = DB::table('products')
-                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
-                    ->join('categories', 'categories.id', '=', 'products.category_id')
-                    ->join('users', 'users.id', '=', 'products.user_id')
+                $products = $defaultQuery
                     ->orderBy('price', 'ASC')
                     ->get();
                 break;
 
             case '3':
-                $products = DB::table('products')
-                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
-                    ->join('categories', 'categories.id', '=', 'products.category_id')
-                    ->join('users', 'users.id', '=', 'products.user_id')
+                $products = $defaultQuery
                     ->orderBy('price', 'DESC')
                     ->get();
                 break;
 
             case '4':
-                $products = DB::table('products')
-                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
-                    ->join('categories', 'categories.id', '=', 'products.category_id')
-                    ->join('users', 'users.id', '=', 'products.user_id')
+                $products = $defaultQuery
                     ->orderBy('id', 'DESC')
                     ->get();
                 break;
 
             case '4':
-                $products = DB::table('products')
-                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
-                    ->join('categories', 'categories.id', '=', 'products.category_id')
-                    ->join('users', 'users.id', '=', 'products.user_id')
+                $products = $defaultQuery
                     ->orderBy('id', 'ASC')
                     ->get();
                 break;
 
             default:
-                $products = DB::table('products')
-                    ->select('products.id', 'products.name', 'products.category_id', 'products.brand', 'products.code', 'products.price', 'products.color', 'products.status', 'products.user_id', 'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
-                    ->join('categories', 'categories.id', '=', 'products.category_id')
-                    ->join('users', 'users.id', '=', 'products.user_id')
-                    ->get();
+                $products = $defaultQuery->get();
                 break;
         }
 
         return view('manager.product', compact('products'));
+    }
+
+    public function storeProductInCache()
+    {
+        if (\Cache::has('products')) {
+            \Cache::forget('products');
+        }
+
+        \Cache::rememberForever('products', function () {
+            return Product::all();
+        });
     }
 }

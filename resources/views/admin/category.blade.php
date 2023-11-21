@@ -96,7 +96,7 @@
                         </a>
                     </li>
                     <li class="header-nav__math">
-                        <a href="/admin/product">
+                        <a href="{{ route('product-index') }}">
                             <svg>
                                 <use xlink:href="/img/nav.svg#tarif"></use>
                             </svg>
