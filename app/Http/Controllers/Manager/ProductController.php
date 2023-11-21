@@ -40,7 +40,7 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
             'products.created_at', 'categories.title as cat_name', 'users.name as user_name')
             ->join('categories', 'categories.id', '=', 'products.category_id')
             ->join('users', 'users.id', '=', 'products.user_id')
-            ->orderBy('price', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
 
         return view('manager.product', compact('products'));
@@ -136,7 +136,7 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
                 \Cache::forget('products');
             }
 
-            $products = \Cache::rememberForever('products', function () {
+            \Cache::rememberForever('products', function () {
                 return Product::all();
             });
 
@@ -191,7 +191,7 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
                 \Cache::forget('products');
             }
 
-            $products = \Cache::rememberForever('products', function () {
+            \Cache::rememberForever('products', function () {
                 return Product::all();
             });
 

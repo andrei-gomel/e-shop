@@ -59,7 +59,7 @@
 
             <div style="margin-top:20px; height: 50px; width: 250px; vertical-align: middle; padding-left: 20px;">
                 <div style="float: left; width: 70px;">
-                    <a href="/admin">
+                    <a href="/">
                         <img src="/img/Letter_E_blue.png" alt="E-shop" width="50" height="50">
                     </a>
                 </div>
