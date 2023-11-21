@@ -82,16 +82,16 @@
                             Главная
                         </a>
                     </li>
-                    <li class="header-nav__list">
+                    <!--<li class="header-nav__list">
                         <a href="{{ route('admin-clients') }}">
                             <svg>
                                 <use xlink:href="/img/nav.svg#referal"></use>
                             </svg>
                             Клиенты
                         </a>
-                    </li>
+                    </li>-->
                     <li class="header-nav__math active">
-                        <a href="{{ route('product-index') }}">
+                        <a href="{{ route('manager-product-index') }}">
                             <svg>
                                 <use xlink:href="/img/nav.svg#tarif"></use>
                             </svg>
@@ -234,10 +234,10 @@
                         @endif--}}
 
                         @if($product->exists)
-                            <form action="{{ route('product-update', $product->id) }}" method="post" id="edit-cat" enctype="multipart/form-data">
+                            <form action="{{ route('manager-product-update', $product->id) }}" method="post" id="edit-cat" enctype="multipart/form-data">
                                 @method('put')
                         @else
-                            <form action="{{ route('product-store') }}" method="post" id="edit-cat" enctype="multipart/form-data">
+                            <form action="{{ route('manager-product-store') }}" method="post" id="edit-cat" enctype="multipart/form-data">
                         @endif
                         @csrf
                             <div class="add-new__form">

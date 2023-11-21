@@ -86,7 +86,6 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
 
         //$product = Product::findOrFail($id);
         $product = $this->productRepository->getEdit($id);
-        //dd($product);
 
         if ($product == null) {
             $notification = [
@@ -136,9 +135,11 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
             {
                 \Cache::forget('products');
             }
-            \Cache::forever('products', function(){
-                    return Product::all();
+
+            $products = \Cache::rememberForever('products', function () {
+                return Product::all();
             });
+
             $notification = [
                 'message' => 'Товар добавлен',
                 'alert-type' => 'success',
@@ -190,8 +191,8 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
                 \Cache::forget('products');
             }
 
-            \Cache::forever('products', function(){
-                    return Product::all();
+            $products = \Cache::rememberForever('products', function () {
+                return Product::all();
             });
 
             $notification = [
@@ -288,6 +289,6 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
                 break;
         }
 
-        return view('admin.product', compact('products'));
+        return view('manager.product', compact('products'));
     }
 }

@@ -82,7 +82,7 @@
                         </a>
                     </li>
                     <li class="header-nav__math active">
-                        <a href="{{ route('product-index') }}">
+                        <a href="{{ route('manager-product-index') }}">
                             <svg>
                                 <use xlink:href="/img/nav.svg#tarif"></use>
                             </svg>
@@ -194,7 +194,7 @@
             <!-- Page header -->
 
             <!-- Filter -->
-            <form action="{{ route('product-filterbyoption') }}" method="post">
+            <form action="{{ route('manager-product-filterbyoption') }}" method="post">
                 @csrf
             <div class="filter">
                 <div class="_container">
