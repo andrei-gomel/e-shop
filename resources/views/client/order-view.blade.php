@@ -154,7 +154,7 @@
         <!-- Header -->
 
         <script>
-                @if(Session::has('message'))
+            @if(Session::has('message'))
             var type="{{Session::get('alert-type','info')}}"
 
             switch(type)
@@ -209,6 +209,9 @@
             <!-- Page header -->
 
             <div class="page-table mt-3">
+                <h3 class="add-new__form-title mb-4">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Информация о клиенте:
+                </h3>
                 <div class="table-responsive">
                     <table class="table with-action">
                         <thead>
@@ -245,6 +248,9 @@
             </div>
 
             <div class="page-table mt-3">
+                <h3 class="add-new__form-title mb-4">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Информация о заказе:
+                </h3>
                 <div class="table-responsive">
                     <table class="table with-action">
                         <thead>
@@ -275,6 +281,9 @@
             </div>
 
             <div class="page-table mt-3">
+                <h3 class="add-new__form-title mb-4">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Информация о доставке:
+                </h3>
                 <div class="table-responsive">
                     <table class="table with-action">
                         <thead>
