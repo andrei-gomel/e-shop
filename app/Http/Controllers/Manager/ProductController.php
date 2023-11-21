@@ -119,19 +119,19 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
     {
         $data = $request->input();
 
-        if ($request->hasFile('photo'))
+        $product = (new Product())->create($data);
+
+        if($product)
         {
-            $imageData = $request->file('photo');
+            if ($request->hasFile('photo'))
+            {
+                $imageData = $request->file('photo');
 
-            $path = $this->service->storeImage($imageData);
+                $path = $this->service->storeImage($imageData);
 
-            $data['photo'] = $path;
-        }
+                $data['photo'] = $path;
+            }
 
-        $item = (new Product())->create($data);
-
-        if($item)
-        {
             if(\Cache::has('products'))
             {
                 \Cache::forget('products');
@@ -162,30 +162,29 @@ class ProductController extends \App\Http\Controllers\Admin\BaseController
     {
         $id = intval($id);
 
-        $item = $this->productRepository->getEdit($id);
+        $product = $this->productRepository->getEdit($id);
 
-        if (empty($item)) {
+        if (empty($product)) {
             return back()
                 ->withErrors(['msg'=>"Запись ID={$id} не найдена."])
                 ->withInput();
         }
 
         $data = $request->input();
-        //dd($data);
 
-        if ($request->hasFile('photo'))
-        {
-            $imageData = $request->file('photo');
-
-            $path = $this->service->storeImage($imageData);
-
-            $data['photo'] = $path;
-        }
-
-        $result = $item->update($data);
+        $result = $product->update($data);
 
         if ($result)
         {
+            if ($request->hasFile('photo'))
+                {
+                    $imageData = $request->file('photo');
+
+                    $path = $this->service->storeImage($imageData);
+
+                    $data['photo'] = $path;
+                }
+
             if(\Cache::has('products'))
             {
                 \Cache::forget('products');
