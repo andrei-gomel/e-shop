@@ -357,8 +357,16 @@
                                                 @foreach ($permissions as $permission)
 
                                                 <div class="checkbox">
-                                                    <input class="custom-checkbox" type="checkbox" id="{{ $permission->slug }}" name="permission[]" value="{{ $permission->id }}">
-                                                    <label for="color-1">{{ $permission->name }}</label>
+                                                    <input class="custom-checkbox" type="checkbox" id="{{ $permission->slug }}" name="permission[]" value="{{ $permission->id }}"
+                                                    @if (@isset($user_permissions))
+                                                        @foreach ($user_permissions as $user_permission)
+                                                            @if ($permission->id == $user_permission->id)
+                                                                checked
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                    >
+                                                    <label for="{{ $permission->slug }}">{{ $permission->name }}</label>
                                                 </div>
 
                                                 @endforeach

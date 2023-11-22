@@ -84,6 +84,8 @@ class ClientController extends Controller
 
         $permissions = Permission::all();
 
+        $user_permissions = $user->permissions()->get();
+
         if ($user === null) {
             $notification = [
                 'message' => 'Клиент ID='.$id.' не найден',
@@ -107,7 +109,7 @@ class ClientController extends Controller
             abort(404);
         }
 
-        return view('admin.add-client', compact('user', 'countries', 'roles', 'permissions'));
+        return view('admin.add-client', compact('user', 'countries', 'roles', 'permissions', 'user_permissions'));
     }
 
     public function store(ClientCreateRequest $request)
