@@ -27,8 +27,6 @@ class OrderController extends Controller
         if (Auth::user()->role === 1)
             $orders = Order::whereNull('orders.deleted_at')->get();
 
-        //dd($orders);
-
         return view('client.orders', compact('orders'));
     }
 
@@ -53,6 +51,8 @@ class OrderController extends Controller
 
     public function view($id)
     {
+        $id = intval($id);
+
         if (Auth::user()->role === 2)
         {
             $order = Order::select('orders.id', 'orders.user_id', 'orders.address', 'orders.delivery', 'orders.comment', 'orders.status', 'order_product.count', 'orders.total_price', 'orders.manager_id', 'orders.created_at', 'users.phone as user_phone', 'users.name as user_name', 'products.name as product_name', 'products.price as product_price', 'products.code as code')
@@ -64,9 +64,7 @@ class OrderController extends Controller
                 ->get();
 
             // Получаем менеджера, который управляет заказом
-
             $this->getManager($order);
-
         }
 
         if (Auth::user()->role === 1)
@@ -79,7 +77,6 @@ class OrderController extends Controller
                 ->get();
 
             // Получаем менеджера, который управляет заказом
-
             $this->getManager($order);
 
         }
@@ -179,6 +176,8 @@ class OrderController extends Controller
 
     public function destroy($id)
     {
+        $id = intval($id);
+
         $result = Order::find($id)->delete();
 
         // Полное удаление из БД.

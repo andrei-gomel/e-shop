@@ -14,13 +14,11 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $id = Auth::user()->id;
-
-        $user = User::find($id);
+        $user = User::find(Auth::user()->id);
 
         if (empty($user)) {
             $notification = [
-                'message' => 'Запись id='.$id.' не найдена',
+                'message' => 'Запись id='. Auth::user()->id .' не найдена',
                 'alert-type' => 'warning',
             ];
 
@@ -29,11 +27,9 @@ class SettingController extends Controller
         }
 
         // Получаем страну пользователя
-        $country = User::find($id)->country;
+        $country = $user->country;
 
         //$user->country = $country->name;
-
-        //dd($user);
 
         $countries = Country::all();
 
@@ -47,11 +43,9 @@ class SettingController extends Controller
     public function update(Request $request, $id)
     {
 
-        $user = User::find($id);
+        $user = User::find(intval($id));
 
         $data = $request->all();
-
-        //dd($data);
 
         $pass = $data['password'];
 
