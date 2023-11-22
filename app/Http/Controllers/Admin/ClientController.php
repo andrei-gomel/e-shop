@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientCreateRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Models\Country;
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -81,6 +82,8 @@ class ClientController extends Controller
 
         $user = User::find($id);
 
+        $permissions = Permission::all();
+
         if ($user === null) {
             $notification = [
                 'message' => 'Клиент ID='.$id.' не найден',
@@ -104,7 +107,7 @@ class ClientController extends Controller
             abort(404);
         }
 
-        return view('admin.add-client', compact('user', 'countries', 'roles'));
+        return view('admin.add-client', compact('user', 'countries', 'roles', 'permissions'));
     }
 
     public function store(ClientCreateRequest $request)
@@ -184,6 +187,8 @@ class ClientController extends Controller
         }
 
         $result = $user->update($data);
+
+        $user->permissions()->sync($data['permission']);
 
         if ($result)
         {

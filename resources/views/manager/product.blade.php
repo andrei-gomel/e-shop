@@ -89,14 +89,14 @@
                             Товары
                         </a>
                     </li>
-                    <li class="header-nav__support">
+                    <!--<li class="header-nav__support">
                         <a href="{{ route('category-index') }}">
                             <svg>
                                 <use xlink:href="/img/nav.svg#docs"></use>
                             </svg>
                             Категории
                         </a>
-                    </li>
+                    </li>-->
                     <li class="header-nav__setting">
                         <a href="/client/orders">
                             <svg>

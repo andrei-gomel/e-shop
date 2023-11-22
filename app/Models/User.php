@@ -16,7 +16,7 @@ class User extends Authenticatable
     use SoftDeletes;
 
     public static $roles = ['Админ', 'Менеджер', 'Покупатель'];
-    public static $status = ['Выкл', 'Вкл'];
+    public static $status = ['Не активен', 'Активен'];
 
     const ADMIN_ROLE = 0;
 
@@ -90,6 +90,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'permission_users');
+    }
+
 /*
     public function setPasswordAttribute($password)
     {

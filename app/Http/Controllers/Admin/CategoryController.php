@@ -55,24 +55,7 @@ class CategoryController extends Controller
         $item = new Category();
         $categoryList = $this->categoryRepository->getForComboBox();
 
-        return view('admin.edit-category',
-            compact('item', 'categoryList'));
-/*
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
-        }
-
-        // Создаст объект и добавит в БД
-         $item = (new Category())->create($data);
-
-        if ($item) {
-            return redirect()->route('admin.categories.edit', [$item->id])
-                ->with(['success'=>'Успешно сохранено']);
-        }
-        else {
-            return back()->withErrors(['msg'=>'Ошибка сохранения'])
-                ->withInput();
-        }*/
+        return view('admin.edit-category', compact('item', 'categoryList'));
     }
 
     /**
@@ -140,6 +123,8 @@ class CategoryController extends Controller
      */
     public function edit($id, CategoryRepository $categoryRepository)
     {
+        $id = intval($id);
+
         //$item = Category::findOrFail($id);
         //$item = Category::first();
         //dd($item);
@@ -177,10 +162,9 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(CategoryUpdateRequest $request, $id)
-    //public function update(Request $request, $id)
     {
-        //$data = $request->all();
-        //dd($data);
+        $id = intval($id);
+        
         $item = $this->categoryRepository->getEdit($id);
 
         /*$validator = \Validator::make($request->all(), $rules);

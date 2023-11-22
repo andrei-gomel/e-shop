@@ -43,7 +43,7 @@ Class CategoryRepository extends CoreRepository
 	{
 		//return $this->startConditions()->all();
 
-    $columns = implode(',', ['id', 'CONCAT (id, ". ", title) AS id_title',]);
+        $columns = implode(',', ['id', 'CONCAT (id, ". ", title) AS id_title',]);
 
 		/*$result[] = $this->startConditions()->all();
 

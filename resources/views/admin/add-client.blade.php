@@ -280,7 +280,12 @@
                                                     <ul class="select__list add-new__select-list">
 
                                                         @foreach($countries as $country)
-                                                            <li class="select__item add-new__select-item" data-value="{{ $country->id }}">{{ $country->name }}</li>
+                                                            <li class="select__item add-new__select-item
+                                                            @if ($user->country_id == $country->id)
+                                                                active
+                                                            @endif
+
+                                                            " data-value="{{ $country->id }}">{{ $country->name }}</li>
                                                         @endforeach
 
                                                     </ul>
@@ -322,7 +327,11 @@
                                                     <ul class="select__list add-new__select-list">
 
                                                         @foreach($roles as $key => $value)
-                                                            <li class="select__item add-new__select-item" data-value="{{ $key }}">{{ $value }}</li>
+                                                            <li class="select__item add-new__select-item
+                                                            @if ($key == $user->role)
+                                                                active
+                                                            @endif
+                                                            " data-value="{{ $key }}">{{ $value }}</li>
                                                         @endforeach
 
                                                     </ul>
@@ -338,6 +347,25 @@
                                             <!-- <div class="add-new__form-group">
                                                 <input type="text" name="role" class="add-new__form-control form-control" placeholder="Роль" value="{{ old('role', $user->role) }}">
                                             </div> -->
+
+                                            @if (@isset($permissions))
+
+                                            <div class="add-new__form-group mb-4">
+                                                <label for="file-logo">{{ __('Выберите разрешения') }}</label>
+                                                <div class="drop-file drop-zone image">
+
+                                                @foreach ($permissions as $permission)
+
+                                                <div class="checkbox">
+                                                    <input class="custom-checkbox" type="checkbox" id="{{ $permission->slug }}" name="permission[]" value="{{ $permission->id }}">
+                                                    <label for="color-1">{{ $permission->name }}</label>
+                                                </div>
+
+                                                @endforeach
+
+                                                </div>
+                                            </div>
+                                            @endif
 
                                             <div class="add-new__form-group">
                                                 <input type="password" name="password" class="add-new__form-control form-control" placeholder="Пароль" value="">
