@@ -190,7 +190,8 @@ class ClientController extends Controller
 
         $result = $user->update($data);
 
-        $user->permissions()->sync($data['permission']);
+        if(isset($data['permission']))
+            $user->permissions()->sync($data['permission']);
 
         if ($result)
         {

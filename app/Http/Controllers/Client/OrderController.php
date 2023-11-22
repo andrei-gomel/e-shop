@@ -94,11 +94,23 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+        if(!$user = Auth::user())
+        {
+            /**
+             *  Здесь надо зарегистрировать пользователя!!!!!
+             *
+             */
+
+            die('Вы не авторизованы!');
+        }
+
         $array_product = session('products');
 
         $data = $request->except('_token');
 
         $array_data = [];
+
+        $result = null;
 
         $products = Product::select('name')->whereIn('id', array_keys($array_product))->get();
 
@@ -141,7 +153,7 @@ class OrderController extends Controller
 
             //$user->notify(new UserOrderNotification($order, $products_name));
 
-            // Отправляем отправку пользователю емайл о заказе в Jobs(Queue)
+            // Отправляем в Jobs(Queue) отправку пользователю емайла о заказе
             dispatch(new OrderNotificationJob($order, $products_name));
 
             $notification = [
