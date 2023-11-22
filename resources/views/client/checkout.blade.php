@@ -212,7 +212,7 @@ $start_time = $start_array[1] + $start_array[0];
 
                     @if ($result !== null)
 
-                    <h4 font color="red">Ваш заказ № {{ $order->id }} оформлен. Мы Вам перезвоним.</h4>
+                    <h4 font color="red">Ваш заказ № {{ $order->id }} оформлен. Наш менеджер Вам перезвонит.</h4>
 
                     @else
 
@@ -269,53 +269,24 @@ $start_time = $start_array[1] + $start_array[0];
                         </ul>
                         @endif
 
-                        @if(Auth::check())
-
                             <p>Для оформления заказа заполните форму. Наш менеджер свяжется с Вами.</p>
 
                                 <div class="login-form">
                                     <form action="/order/save" method="POST">
                                         @csrf
 
-                                        <p>Адрес доставки:</p>
-                                        <input type="text" name="address" placeholder="Адрес доставки" value="{{-- old('address', $address) --}}">
-                                        <br>
+                                        @if(! Auth::check())
 
-                                        <p>Тип доставки:</p>
-                                        <select name="delivery" class="form-select" aria-label="Default select example">
-                                            <option selected>Ваш выбор</option>
-                                            <option value="1">Самовывоз из нашего пункта</option>
-                                            <option value="2">Курьером (с 10:00 до 18:00)</option>
-                                            <option value="3">Почтой</option>
-                                        </select><br><br>
-                                        <!--
-                                        <div class="form-check">
-                                        <input class="form-check-input" name="delivery" type="radio" value="1" checked> Самовывоз из нашего пункта
-                                        <input class="form-check-input" name="delivery" type="radio" value="2"> Курьером (с 10:00 до 18:00)
-                                        <input class="form-check-input" name="delivery" type="radio" value="3"> Почтой
-                                        </div>-->
+                                        <p>Ваше имя:</p>
+                                        <input type="text" name="name" placeholder="Ваше имя" value="{{-- old('name', $name) --}}">
 
-                                        <p>Комментарий к заказу:</p>
-                                        <input type="text" name="comment" placeholder="Комментарий" value="{{-- old('comment', $comment) --}}">
+                                        <p>Email:</p>
+                                        <input type="email" name="email" id="email" placeholder="Email" value="{{-- old('email', $email) --}}">
 
-                                        <button type="submit" name="submit" class="btn btn-default add-to-cart">Оформить</button>
-                                    </form>
-                                </div>
-                        @else
+                                        <p>Номер телефона:</p>
+                                        <input type="tel" name="phone" id="phone" placeholder="Номер телефона" value="{{-- old('phone', $phone) --}}">
 
-                        <p>Для оформления заказа заполните форму. Наш менеджер свяжется с Вами.</p>
-
-                        <div class="login-form">
-                            <form action="/order/save" method="POST">
-                                @csrf
-                                <p>Ваше имя:</p>
-                                <input type="text" name="name" placeholder="Ваше имя" value="{{-- old('name', $name) --}}">
-
-                                <p>Email:</p>
-                                <input type="email" name="email" id="email" placeholder="Email" value="{{-- old('email', $email) --}}">
-
-                                <p>Номер телефона:</p>
-                                <input type="tel" name="phone" id="phone" placeholder="Номер телефона" value="{{-- old('phone', $phone) --}}">
+                                        @endif
 
                                 <p>Адрес доставки:</p>
                                 <input type="text" name="address" placeholder="Адрес доставки" value="{{-- old('address', $address) --}}">
@@ -341,7 +312,7 @@ $start_time = $start_array[1] + $start_array[0];
                                 <button type="submit" name="submit" class="btn btn-default add-to-cart">Оформить</button>
                             </form>
                         </div>
-                        @endif
+
                     </div>
 
                 </div>

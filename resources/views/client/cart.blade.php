@@ -206,7 +206,7 @@ $start_time = $start_array[1] + $start_array[0];
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td><h4>Итого:</h4></td>
+                            <td><b>Итого:</b></td>
                             <td><b><span id="total">{{ $totalPrice }}</span></b></td>
                             <td></td>
                         </tr>

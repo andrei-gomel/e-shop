@@ -86,6 +86,14 @@
                             Главная
                         </a>
                     </li>
+                    <li class="header-nav__setting active">
+                        <a href="/client/setting">
+                            <svg>
+                                <use xlink:href="/img/nav.svg#setting"></use>
+                            </svg>
+                            Мои данные
+                        </a>
+                    </li>
                     <li class="header-nav__video">
                         <a href="/client/orders">
                             <svg>
@@ -98,14 +106,7 @@
                             @endif
                         </a>
                     </li>
-                    <li class="header-nav__setting active">
-                        <a href="/client/setting">
-                            <svg>
-                                <use xlink:href="/img/nav.svg#setting"></use>
-                            </svg>
-                            Настройки
-                        </a>
-                    </li>
+
                     <li class="header-nav__math">
                         <a href="/client/statistic">
                             <svg>

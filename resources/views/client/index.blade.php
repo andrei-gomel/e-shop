@@ -72,9 +72,17 @@
                </li>
                @endif
                <li class="header-nav__setting">
-                  <a href="/client/orders">
+                  <a href="/client/setting">
                      <svg>
                         <use xlink:href="/img/nav.svg#setting"></use>
+                     </svg>
+                     Мои данные
+                  </a>
+               </li>
+               <li class="header-nav__video">
+                  <a href="/client/orders">
+                     <svg>
+                        <use xlink:href="/img/nav.svg#tarif"></use>
                      </svg>
                      @if(Auth::user()->role === 1)
                          Заказы

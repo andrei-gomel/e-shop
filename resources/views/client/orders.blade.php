@@ -84,6 +84,14 @@
                             Главная
                         </a>
                     </li>
+                    <li class="header-nav__setting">
+                        <a href="/client/setting">
+                            <svg>
+                                <use xlink:href="/img/nav.svg#setting"></use>
+                            </svg>
+                            Мои данные
+                        </a>
+                    </li>
                     <li class="header-nav__video active">
                         <a href="/client/orders">
                             <svg>
@@ -94,15 +102,6 @@
                             @elseif(Auth::user()->role === 2)
                                 Мои заказы
                             @endif
-                        </a>
-                    </li>
-
-                    <li class="header-nav__setting">
-                        <a href="/client/setting">
-                            <svg>
-                                <use xlink:href="/img/nav.svg#setting"></use>
-                            </svg>
-                            Настройки
                         </a>
                     </li>
                     <li class="header-nav__math">
