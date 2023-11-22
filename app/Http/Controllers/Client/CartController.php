@@ -12,19 +12,13 @@ class CartController extends Controller
 {
     public function addToCart($id)
     {
-        //dd($id);
+        $id = intval($id);
 
         // Добавляем товар в корзину
-        //dd(self::addProduct($id));
 
         $productInCart = self::addProduct($id);
 
-        //dd($productInCart);
-        //dd(session('products'));
-
         // Возвращаем пользователя на страницу
-
-        //$_SERVER['HTTP_REFERER'];
 
         return redirect()
             ->route('product', $id);
@@ -66,7 +60,6 @@ class CartController extends Controller
         }
 
         session(['products' => $productsInCart]);
-//dd(session('products'));
 
         return self::countItems();
     }
@@ -107,8 +100,6 @@ class CartController extends Controller
     {
         $productsInCart = self::getProducts();
 
-        //dd($productsInCart);
-
         $productsIds = array_keys($productsInCart);
 
         $products = Product::find($productsIds);
@@ -131,7 +122,6 @@ class CartController extends Controller
      */
     public static function clear()
     {
-        //if (session('products') !== null)
         if (session()->has('products'))
         {
             session()->forget('products');
@@ -144,17 +134,8 @@ class CartController extends Controller
         $productsInCart = [];
         $productsInCart = self::getProducts();
 
-        //echo '<pre>';
-        //print_r($productsInCart);
-
-        //echo 'ID продукта '.$id;
-        //
-        //echo 'ID продукта '.$productsInCart[$id];
-        //die();
-
         unset($productsInCart[$id]);
 
-        //
         session(['products' => $productsInCart]);
     }
 
@@ -179,8 +160,6 @@ class CartController extends Controller
 
             $products = Product::find($productsIds);
 
-            //dd($products);
-
             // Получаем общую стоимость товаров
             $totalPrice = self::getTotalPrice($products);
         }
@@ -195,15 +174,12 @@ class CartController extends Controller
 
         $products = Product::find($productsIds);
 
-        //dd($products);
-
         // Получаем общую стоимость товаров
         $totalPrice = self::getTotalPrice($products);
     }
 
     public function checkout(Request $request)
     {
-        //dd(Auth::check());
         $data = $request->collect()->except('_token');
 
         self::updateCart($data);
@@ -221,12 +197,9 @@ class CartController extends Controller
 
         $products = Product::find($productsIds);
 
-        //dd($products);
-
         $totalPrice = self::getTotalPrice($products);
 
         session(['totalPrice' => $totalPrice]);
-        //dd(session('totalPrice'));
 
         $categories = [];
         $categories = Category::where('parent_id', 1)->get();
