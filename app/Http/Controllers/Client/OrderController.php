@@ -32,6 +32,8 @@ class OrderController extends Controller
 
     public function edit($id)
     {
+        $id = intval($id);
+
         //$orderProducts = $order->products;  // вернет все продукты для заказа
 
         $order = Order::select('orders.id', 'orders.user_id', 'orders.address', 'orders.delivery', 'orders.comment', 'orders.status', 'order_product.count', 'orders.total_price', 'orders.manager_id', 'orders.created_at', 'users.phone as user_phone', 'users.email as user_email', 'users.name as user_name', 'products.name as product_name', 'products.price as product_price')

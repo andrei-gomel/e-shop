@@ -58,7 +58,7 @@
 </head>
 
 <body>
-@if (Auth::user()->role === 1)
+
     <div id="container">
 
         <nav class="header-nav">
@@ -97,7 +97,6 @@
                             @endif
                         </a>
                     </li>
-
                     <li class="header-nav__setting">
                         <a href="/client/setting">
                             <svg>
@@ -122,14 +121,6 @@
                             Поддержка
                         </a>
                     </li>
-                    <!--<li class="header-nav__referal">
-                       <a href="./referals.html">
-                          <svg>
-                             <use xlink:href="/img/nav.svg#referal"></use>
-                          </svg>
-                          Реферальная система
-                       </a>
-                    </li>-->
                     <li class="header-nav__setting">
                     <!--<a href="{{ route('client-logout') }}">-->
                         <a href="/client/logout">
@@ -155,7 +146,7 @@
         <!-- Header -->
 
         <script>
-                @if(Session::has('message'))
+            @if(Session::has('message'))
             var type="{{Session::get('alert-type','info')}}"
 
             switch(type)
@@ -229,111 +220,118 @@
                 </div>
                 <div class="add-new__body">
                     <div class="_container">
-                        {{--           @if($errors->any())
-                                      <div class="row justify-content-center">
-                                          <div class="col-md-11">
-                                              <div class="alert alert-danger" role="alert">
-                                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                      <span aria-hidden="true">x</span>
-                                                  </button>
-                                                  {{ $errors->first() }}
-                                              </div>
-                                          </div>
-                                      </div>
-                                  @endif--}}
+                        {{--@if($errors->any())
+                            <div class="row justify-content-center">
+                                <div class="col-md-11">
+                                    <div class="alert alert-danger" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">x</span>
+                                        </button>
+                                        {{ $errors->first() }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif--}}
 
-                                <form action="{{ route('client-order-update', $order[0]->id) }}" method="post" id="edit-cat">
-                                @method('PUT')
-                                @csrf
-                                        <div class="add-new__form">
-                                            <div class="add-new__form-group">
-                                                {{--<input type="hidden" name="id_user" value="{{ $id }}">--}}
-                                                <input type="text" name="name" class="add-new__form-control form-control" placeholder="Имя" value="{{ old('name', $order[0]->user_name) }}">
-                                            </div>
+                        <form action="{{ route('client-order-update', $order[0]->id) }}" method="post" id="edit-cat">
+                        @method('PUT')
+                        @csrf
+                            <div class="add-new__form">
+                                <div class="add-new__form-group">
+                                    {{--<input type="hidden" name="id_user" value="{{ $id }}">--}}
+                                    <input type="text" name="name" class="add-new__form-control form-control" placeholder="Имя" value="{{ old('name', $order[0]->user_name) }}">
+                                </div>
 
-                                            <div class="add-new__form-group">
-                                                <input type="text" name="phone" id="phone" class="add-new__form-control form-control" placeholder="Телефон" value="{{ old('phone', $order[0]->user_phone) }}">
-                                            </div>
+                                <div class="add-new__form-group">
+                                    <input type="text" name="phone" id="phone" class="add-new__form-control form-control" placeholder="Телефон" value="{{ old('phone', $order[0]->user_phone) }}">
+                                </div>
 
-                                            <div class="add-new__form-group">
-                                                <input type="text" name="created_at" class="add-new__form-control form-control" placeholder="Дата создания" value="{{ old('created_at', $order[0]->created_at) }}">
-                                            </div>
+                                <div class="add-new__form-group">
+                                    <input type="text" name="created_at" class="add-new__form-control form-control" placeholder="Дата создания" value="{{ old('created_at', $order[0]->created_at) }}">
+                                </div>
 
-                                            <div class="add-new__form-group">
-                                                <input type="text" name="address" class="add-new__form-control form-control" placeholder="Адрес" value="{{ old('email', $order[0]->address) }}">
-                                            </div>
+                                <div class="add-new__form-group">
+                                    <input type="text" name="address" class="add-new__form-control form-control" placeholder="Адрес" value="{{ old('email', $order[0]->address) }}">
+                                </div>
 
-                                            <div class="add-new__form-group">
-                                                <div class="select add-new__select">
-                                                    <button class="btn select__btn add-new__select-btn" type="button">
-                                                        <span>
+                                <div class="add-new__form-group">
+                                    <div class="select add-new__select">
+                                        <button class="btn select__btn add-new__select-btn" type="button">
+                                            <span>
 
-                                                            @foreach(\App\Models\Order::$delivery as $key => $value)
-                                                                @if($key == $order[0]->delivery) {{ $value}} @endif
-                                                            @endforeach
+                                                @foreach(\App\Models\Order::$delivery as $key => $value)
+                                                    @if($key == $order[0]->delivery) {{ $value}} @endif
+                                                @endforeach
 
-                                                        </span>
-                                                        <svg><use xlink:href="/Views/img/sprite.svg#drop"></use></svg>
-                                                    </button>
-                                                    <ul class="select__list add-new__select-list">
+                                            </span>
+                                            <svg><use xlink:href="/Views/img/sprite.svg#drop"></use></svg>
+                                        </button>
+                                        <ul class="select__list add-new__select-list">
 
-                                                        @foreach(\App\Models\Order::$delivery as $key => $value)
-                                                            <li class="select__item add-new__select-item" data-value="{{ $key }}">{{ $value }}</li>
-                                                        @endforeach
+                                            @foreach(\App\Models\Order::$delivery as $key => $value)
+                                                <li class="select__item add-new__select-item
+                                                @if ($key == $order[0]->delivery)
+                                                    active
+                                                @endif
+                                                " data-value="{{ $key }}">{{ $value }}</li>
+                                            @endforeach
 
-                                                    </ul>
-                                                    <input type="text" name="delivery" class="select__input" value="
+                                        </ul>
+                                        <input type="text" name="delivery" class="select__input" value="
 
-                                                    @foreach(\App\Models\Order::$delivery as $key => $value)
-                                                    @if($key == $order[0]->delivery) {{ $key}} @endif
-                                                    @endforeach
-                                                        " hidden/>
-                                                </div>
-                                            </div>
+                                        @foreach(\App\Models\Order::$delivery as $key => $value)
+                                        @if($key == $order[0]->delivery) {{ $key}} @endif
+                                        @endforeach
+                                            " hidden/>
+                                    </div>
+                                </div>
 
-                                            <div class="add-new__form-group">
-                                                <input type="text" name="comment" class="add-new__form-control form-control" placeholder="Комментарий" value="{{ old('email', $order[0]->comment) }}">
-                                            </div>
+                                <div class="add-new__form-group">
+                                    <input type="text" name="comment" class="add-new__form-control form-control" placeholder="Комментарий" value="{{ old('email', $order[0]->comment) }}">
+                                </div>
 
-                                            <div class="add-new__form-group">
-                                                <div class="select add-new__select">
-                                                    <button class="btn select__btn add-new__select-btn" type="button">
-                                                        <span>
+                                @if (Auth::user()->role === 1)
+                                <div class="add-new__form-group">
+                                    <div class="select add-new__select">
+                                        <button class="btn select__btn add-new__select-btn" type="button">
+                                            <span>
+                                                @foreach(\App\Models\Order::$status as $key => $value)
+                                                    @if($key == $order[0]->status) {{ $value}} @endif
+                                                @endforeach
+                                            </span>
+                                            <svg><use xlink:href="/Views/img/sprite.svg#drop"></use></svg>
+                                        </button>
+                                        <ul class="select__list add-new__select-list">
 
-                                                            @foreach(\App\Models\Order::$status as $key => $value)
-                                                               @if($key == $order[0]->status) {{ $value}} @endif
-                                                            @endforeach
+                                            @foreach(\App\Models\Order::$status as $key => $value)
+                                                <li class="select__item add-new__select-item
+                                                @if ($key == $order[0]->status)
+                                                    active
+                                                @endif
+                                                " data-value="{{ $key }}">{{ $value }}</li>
+                                            @endforeach
 
-                                                        </span>
-                                                        <svg><use xlink:href="/Views/img/sprite.svg#drop"></use></svg>
-                                                    </button>
-                                                    <ul class="select__list add-new__select-list">
+                                        </ul>
+                                        <input type="text" name="status" class="select__input" value="
 
-                                                        @foreach(\App\Models\Order::$status as $key => $value)
-                                                            <li class="select__item add-new__select-item" data-value="{{ $key }}">{{ $value }}</li>
-                                                        @endforeach
+                                        @foreach(\App\Models\Order::$status as $key => $value)
+                                        @if($key == $order[0]->status) {{ $key}} @endif
+                                        @endforeach
+                                        " hidden/>
+                                    </div>
+                                </div>
 
-                                                    </ul>
-                                                    <input type="text" name="status" class="select__input" value="
+                                <div class="add-new__form-group">
+                                    <input type="text" name="manager" class="add-new__form-control form-control" placeholder="Менеджер" value="{{ old('manager', $order[0]->manager) }}">
+                                </div>
 
-                                                    @foreach(\App\Models\Order::$status as $key => $value)
-                                                    @if($key == $order[0]->status) {{ $key}} @endif
-                                                    @endforeach
-                                                 " hidden/>
-                                                </div>
-                                            </div>
+                                <div class="add-new__form-group">
+                                    <input type="hidden" name="user_id" class="add-new__form-control form-control" value="{{ Auth::user()->id }}">
+                                </div>
+                                @endif
+                            </div>
 
-                                            <div class="add-new__form-group">
-                                                <input type="text" name="manager" class="add-new__form-control form-control" placeholder="Менеджер" value="{{ old('email', $order[0]->manager) }}">
-                                            </div>
-
-                                            <div class="add-new__form-group">
-                                                <input type="hidden" name="user_id" class="add-new__form-control form-control" value="{{ Auth::user()->id }}">
-                                            </div>
-
-                                        </div>
-
-                                    </form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -369,6 +367,6 @@
 
     <!-- Custom -->
     <script src="/js/main.js"></script>
-@endif
+
 </body>
 </html>

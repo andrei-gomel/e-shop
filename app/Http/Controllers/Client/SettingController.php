@@ -47,13 +47,19 @@ class SettingController extends Controller
 
         $data = $request->all();
 
-        $pass = $data['password'];
+        if ($data['password'] !== null) {
+            $pass = $data['password'];
+            $data['password'] = Hash::make($pass);
+        } else {
+            unset($data['password']);
+            unset($data['password_confirmation']);
+        }
 
-        $data['password'] = Hash::make($pass);
+        $user_email = User::where('email', $data['email'])
+                            ->where('id', Auth::user()->id)
+                            ->first();
 
-        $user_email = User::where('email', $data['email'])->first();
-
-        if(!$user_email)
+        if($user_email)
         {
             $result = $user->update($data);
 

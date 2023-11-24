@@ -123,14 +123,7 @@
                             Поддержка
                         </a>
                     </li>
-                    <!--<li class="header-nav__referal">
-                       <a href="./referals.html">
-                          <svg>
-                             <use xlink:href="/img/nav.svg#referal"></use>
-                          </svg>
-                          Реферальная система
-                       </a>
-                    </li>-->
+
                     <li class="header-nav__setting">
                     <!--<a href="{{ route('client-logout') }}">-->
                         <a href="/client/logout">
@@ -157,7 +150,7 @@
         <!-- Header -->
 
         <script>
-                @if(Session::has('message'))
+            @if(Session::has('message'))
             var type="{{Session::get('alert-type','info')}}"
 
             switch(type)
@@ -234,18 +227,18 @@
                 </div>
                 <div class="add-new__body">
                     <div class="_container">
-                        {{--           @if($errors->any())
-                                      <div class="row justify-content-center">
-                                          <div class="col-md-11">
-                                              <div class="alert alert-danger" role="alert">
-                                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                      <span aria-hidden="true">x</span>
-                                                  </button>
-                                                  {{ $errors->first() }}
-                                              </div>
-                                          </div>
-                                      </div>
-                                  @endif--}}
+                    {{--@if($errors->any())
+                            <div class="row justify-content-center">
+                                <div class="col-md-11">
+                                    <div class="alert alert-danger" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">x</span>
+                                        </button>
+                                        {{ $errors->first() }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif--}}
 
                         @if($user->exists)
                             <form action="{{ route('client-update-setting', $user->id) }}" method="post" id="edit-cat">
@@ -280,7 +273,11 @@
                                                     <ul class="select__list add-new__select-list">
 
                                                         @foreach($countries as $country)
-                                                            <li class="select__item add-new__select-item" data-value="{{ $country->id }}">{{ $country->name }}</li>
+                                                            <li class="select__item add-new__select-item
+                                                            @if ($country->id == $user->country_id)
+                                                                active
+                                                            @endif
+                                                            " data-value="{{ $country->id }}">{{ $country->name }}</li>
                                                         @endforeach
 
                                                     </ul>

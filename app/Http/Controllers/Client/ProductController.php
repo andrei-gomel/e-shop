@@ -11,12 +11,10 @@ class ProductController extends Controller
 {
     public function index($id)
     {
-        $id = intval($id);
-
         $data = [];
         $history = [];
 
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail(intval($id));
 
         $data[] = $product;
 

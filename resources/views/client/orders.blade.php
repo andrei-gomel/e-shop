@@ -120,14 +120,6 @@
                             Поддержка
                         </a>
                     </li>
-                    <!--<li class="header-nav__referal">
-                       <a href="./referals.html">
-                          <svg>
-                             <use xlink:href="/img/nav.svg#referal"></use>
-                          </svg>
-                          Реферальная система
-                       </a>
-                    </li>-->
                     <li class="header-nav__setting">
                     <!--<a href="{{ route('client-logout') }}">-->
                         <a href="/client/logout">
@@ -154,7 +146,7 @@
         <!-- Header -->
 
         <script>
-                @if(Session::has('message'))
+            @if(Session::has('message'))
             var type="{{Session::get('alert-type','info')}}"
 
             switch(type)
@@ -243,10 +235,12 @@
                                     <td>{{ \App\Models\Order::$delivery[$item->delivery] }}</td>
                                     <td>
                                         <div>
+                                            @if (Auth::user()->role === 1)
                                             <a href="{{ route('client-orders-edit', $item->id) }}">
                                                 <svg><use xlink:href="/img/sprite.svg#arrow"></use></svg></a>
-                                            <a href="{{ route('client-order-delete', $item->id) }}"><svg><use xlink:href="/img/sprite.svg#close"></use></svg></a>
+                                            @endif
                                             <a href="{{ route('client-orders-view', $item->id) }}"><svg><use xlink:href="/img/sprite.svg#home"></use></svg></a>
+                                            <a href="{{ route('client-order-delete', $item->id) }}"><svg><use xlink:href="/img/sprite.svg#close"></use></svg></a>
                                         </div>
                                     </td>
                                 </tr>

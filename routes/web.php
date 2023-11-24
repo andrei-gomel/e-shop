@@ -78,9 +78,9 @@ Route::group(['prefix' => 'manager', 'middleware' => ['auth', 'manager']], funct
 
 Route::view('/client/cabinet', 'client.index')->middleware('auth')->name('client-cabinet');
 Route::get('/client/orders', [\App\Http\Controllers\Client\OrderController::class, 'index'])->middleware('auth')->name('client-orders');
-Route::get('/client/orders/edit/{id}', [\App\Http\Controllers\Client\OrderController::class, 'edit'])->middleware('auth')->name('client-orders-edit');
+Route::get('/client/orders/edit/{id}', [\App\Http\Controllers\Client\OrderController::class, 'edit'])->middleware(['auth', 'manager'])->name('client-orders-edit');
 Route::get('/client/orders/{id}', [\App\Http\Controllers\Client\OrderController::class, 'view'])->middleware('auth')->name('client-orders-view');
-Route::get('/client/order/delete/{id}', [\App\Http\Controllers\Client\OrderController::class, 'destroy'])->middleware('auth')->name('client-order-delete');
+Route::get('/client/order/delete/{id}', [\App\Http\Controllers\Client\OrderController::class, 'destroy'])->middleware(['auth', 'manager'])->name('client-order-delete');
 Route::put('/client/order/update/{id}', [\App\Http\Controllers\Client\OrderController::class, 'update'])->middleware(['auth', 'manager'])->name('client-order-update');
 Route::get('/client/setting', [\App\Http\Controllers\Client\SettingController::class, 'index'])->middleware('auth')->name('client-setting');
 Route::put('/client/update/{id}', [\App\Http\Controllers\Client\SettingController::class, 'update'])->middleware('auth')->name('client-update-setting');
