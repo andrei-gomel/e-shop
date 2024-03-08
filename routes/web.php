@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Client\TestController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,13 +22,39 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/test', TestController::class);
 
+/**
+ *  Отображение страницы с кнопкой для отправки письма для подтверждения email
+ */
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+/**
+ * Обработчик события когда пользователь щелкает ссылку подтверждения электронной почты,
+ * которая была отправлена ему по электронной почте
+ */
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect(route('client-cabinet'));
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+/**
+ *  Маршрут, позволяющий пользователю запрашивать повторную отправку письма с подтверждением
+ */
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 //Route::post('/admin/login', [\App\Http\Controllers\Admin\LoginController::class, 'login']);
 
 //Route::get('/', [\App\Http\Controllers\Client\LoginController::class, 'login']);
 
 Route::get('/', [\App\Http\Controllers\Client\MainController::class, 'index'])->name('shop-index');
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function (){
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'verified']], function (){
     //  \Illuminate\Support\Facades\Gate::authorize('view-protected-part');
     Route::get('/clients', [\App\Http\Controllers\Admin\ClientController::class, 'index'])->name('admin-clients');
     Route::get('/client/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'view'])->name('client-view');
@@ -65,7 +93,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
 });
 
-Route::group(['prefix' => 'manager', 'middleware' => ['auth', 'manager']], function (){
+Route::group(['prefix' => 'manager', 'middleware' => ['auth', 'manager', 'verified']], function (){
     Route::get('/product', [\App\Http\Controllers\Manager\ProductController::class, 'index'])->name('manager-product-index');
     Route::get('/product/create', [\App\Http\Controllers\Manager\ProductController::class, 'create'])->name('manager-product-create');
     Route::post('/product/save', [\App\Http\Controllers\Manager\ProductController::class, 'store'])->name('manager-product-store');
@@ -76,7 +104,7 @@ Route::group(['prefix' => 'manager', 'middleware' => ['auth', 'manager']], funct
     Route::get('/product/{id}', [\App\Http\Controllers\Manager\ProductController::class, 'show'])->name('manager-product-show');
 });
 
-Route::view('/client/cabinet', 'client.index')->middleware('auth')->name('client-cabinet');
+Route::view('/client/cabinet', 'client.index')->middleware('auth', 'verified')->name('client-cabinet');
 Route::get('/client/orders', [\App\Http\Controllers\Client\OrderController::class, 'index'])->middleware('auth')->name('client-orders');
 Route::get('/client/orders/edit/{id}', [\App\Http\Controllers\Client\OrderController::class, 'edit'])->middleware(['auth', 'manager'])->name('client-orders-edit');
 Route::get('/client/orders/{id}', [\App\Http\Controllers\Client\OrderController::class, 'view'])->middleware('auth')->name('client-orders-view');
@@ -112,6 +140,10 @@ Route::get('/addtocart/{id}', [\App\Http\Controllers\Client\CartController::clas
 Route::get('/cart', [\App\Http\Controllers\Client\CartController::class, 'showCart'])->name('showcart');
 Route::post('/cart/checkout', [\App\Http\Controllers\Client\CartController::class, 'checkout'])->name('checkout');
 Route::post('/order/save', [\App\Http\Controllers\Client\OrderController::class, 'store'])->name('order-save');
+
+/*Route::get('/home', function () {
+    return view('auth.verify-email');
+});*/
 
 /*Route::get('/', function () {
     return view('home');

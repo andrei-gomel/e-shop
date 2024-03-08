@@ -13,3 +13,8 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+app/Http/Controllers/Client/TestController.php
+database/example.sql
+database/orders.sql
+database/products.sql
+database/users.sql

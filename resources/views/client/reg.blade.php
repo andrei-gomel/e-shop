@@ -25,43 +25,103 @@
     <script src="/js/jquery.maskedinput.js"></script>
 
    <title>E-shop | Регистрация</title>
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
 </head>
 <body>
+
+<?php
+$country = [
+    '1' => 'Беларусь',
+    '2' => 'Россия',
+];
+?>
+
    <div class="wrapper">
       <main class="main">
-
          <section class="sign">
             <div class="_container">
                <div class="sign-body">
                   <h1 class="sign-title">Добро пожаловать на E-shop!</h1>
                   <p class="sign-desc">Введите Ваши данные для регистрации</p>
-                  <form action="/client/register" method="POST" class="sign-form needs-validation" novalidate>
-                     @method('POST')
+                   @if ($errors->any())
+                       <div class="alert alert-danger">
+                           <ul>
+                               @foreach ($errors->all() as $error)
+                                   <li>{{ $error }}</li>
+                               @endforeach
+                           </ul>
+                       </div>
+                   @endif
+                  <form action="{{ route('client-register') }}" method="POST" class="sign-form needs-validation" novalidate>
                       @csrf
                       <div class="swiper">
                         <div class="swiper-wrapper">
                            <div class="swiper-slide">
                               <div class="sign-form-step">
 
-                                  <div class="sign-form-group"><input type="text" class="form-control" name="name" placeholder="Имя" required/></div>
+                                  <div class="sign-form-group">
+                                      <input type="text" class="form-control" name="name" placeholder="Имя" value="{{ old("name") }}" required/>
+                                  </div>
 
                                  <div class="sign-form-group">
-                                    <select name="country_id" class="form-control form-select" id="country_id" required>
-                                       <option value="">Страна</option>
-                                       <option value="1">Беларусь</option>
-                                       <option value="2">Россия</option>
+                                    <select name="country_id" class="form-control form-select" id="country_id" value="{{ old("country_id") }}" required/>
+                                       {{-- @if(old("country_id"))
+                                            <option value="{{ old("country_id") }}">{{ old("value") }}</option>
+                                        @else
+                                            <option value="">Страна</option>
+                                        @endif
+
+                                       @foreach($country as $key => $value)
+                                           <option value="{{ $key }}">{{ $value }}</option>
+                                       @endforeach --}}
+
+                                     <option value="">Страна</option>
+                                     <option value="1">Беларусь</option>
+                                     <option value="2">Россия</option>
+
                                     </select>
                                  </div>
-                                 <div class="sign-form-group"><input type="text" class="form-control" name="city" placeholder="Город" required/></div>
-                                 <div class="sign-form-group"><input type="email" class="form-control" name="email" placeholder="Email" required/></div>
-                                 <div class="sign-form-group"><input type="text" id="phone" class="form-control" name="phone" placeholder="Телефон" required/></div>
 
-                                  <div class="sign-form-group"><input type="password" class="form-control" name="password" placeholder="Пароль" required/></div>
-                                  <div class="sign-form-group"><input type="password" class="form-control" name="password_confirmation" placeholder="Повтор пароля" required/></div>
+                                 <div class="sign-form-group">
+                                     <input type="text" class="form-control" name="city" placeholder="Город" value="{{ old("city") }}" required/>
+                                 </div>
+
+                                 <div class="sign-form-group">
+                                     <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old("email") }}" required/>
+                                 </div>
+
+                                 <div class="sign-form-group">
+                                     <input type="text" id="phone" class="form-control" name="phone" placeholder="Телефон" value="{{ old("phone") }}" required/>
+                                 </div>
+
+                                  <div class="sign-form-group">
+                                      <input type="password" class="form-control" name="password" id="password" placeholder="Пароль" required/>
+                                  </div>
+
+                                  <div class="sign-form-group">
+                                      <input type="password" class="form-control" name="password_confirmation" placeholder="Повтор пароля" required/>
+                                  </div>
+
+                                  <div class="sign-form-group">
+                                      <button class="btn btn__black" type="submit">Зарегистрироваться</button>
+                                  </div>
+
                                   <input type="hidden" name="role" value="2">
-                                  <div class="sign-form-group"><button class="btn btn__black" type="submit">Зарегистрироваться</button></div>
 
-                              </div>
+                              </div><br>
+                               <p style="font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                Уже зарегистрирован? <a href="/client/login">Войти</a>
+                               </p>
+
                            </div>
 
                         </div>
@@ -71,10 +131,8 @@
             </div>
          </section>
          <!-- Sign -->
-
       </main>
       <!-- Main -->
-
    </div>
 
    <script>
@@ -96,7 +154,7 @@
    </script>
 
    <!-- Custom -->
-   <script src="js/main.js"></script>
+   <script src="{{ asset('js/consult.js') }}"></script>
 
 </body>
 </html>

@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 100);
             $table->string('email', 50)->unique();
-            //$table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('phone', 20);
             $table->tinyInteger('country_id');
             $table->string('city', 50);
@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('status')->default(1);
             $table->tinyInteger('role')->default(2);
 
-            //$table->rememberToken();
+            $table->rememberToken();
         });
     }
 

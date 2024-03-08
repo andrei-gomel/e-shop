@@ -21,11 +21,20 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
     <title>E-shop | Авторизация</title>
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
 </head>
 <body>
 
 <div class="wrapper">
-
     <main class="main">
             <div class="_container">
                 <div class="sign-body">
@@ -38,25 +47,32 @@
                                 <div class="swiper-slide">
                                     <div class="sign-form-step">
 
-                                        <div class="sign-form-group"><input type="email" class="form-control" name="email" placeholder="Email" required/></div>
+                                        <div class="sign-form-group">
+                                            <input type="email" class="form-control" name="email" placeholder="Email" required/>
+                                        </div>
 
-                                        <div class="sign-form-group"><input type="password" class="form-control" name="password" placeholder="Пароль" required/></div>
-                                        <div class="sign-form-group"><button class="btn btn__black" type="submit">Войти</button></div>
+                                        <div class="sign-form-group">
+                                            <input type="password" class="form-control" name="password" placeholder="Пароль" required/>
+                                        </div>
+
+                                        <div class="sign-form-group">
+                                            <button class="btn btn__black" type="submit">Войти</button>
+                                        </div>
 
                                     </div>
+                                    <br>
+                                    <p style="font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="/client/register">Регистрация</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a href="#">Забыл пароль</a>
+                                    </p>
                                 </div>
-
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-
         <!-- Sign -->
-
     </main>
     <!-- Main -->
-
 </div>
 
 <!-- JQuery -->

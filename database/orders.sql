@@ -31,11 +31,11 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `comment` varchar(200) DEFAULT NULL,
-  `address` varchar(255) NOT NULL,
+  `address` varchar(256) NOT NULL,
   `status` varchar(20) NOT NULL,
   `total_price` int(10) NOT NULL,
   `delivery` varchar(20) NOT NULL,
-  `manager_id` int(11) DEFAULT NULL,
+  `manager_id` int(2) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime DEFAULT NULL
