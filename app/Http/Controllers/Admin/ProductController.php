@@ -142,11 +142,7 @@ class ProductController extends BaseController
         {
             if ($request->hasFile('photo'))
             {
-                $imageData = $request->file('photo');
-
-                $path = $this->service->storeImage($imageData);
-
-                $data['photo'] = $path;
+                $this->prepareToStoreImage();
             }
 
             $this->storeProductInCache();
@@ -193,11 +189,7 @@ class ProductController extends BaseController
         {
             if ($request->hasFile('photo'))
             {
-                $imageData = $request->file('photo');
-
-                $path = $this->service->storeImage($imageData);
-
-                $data['photo'] = $path;
+                $this->prepareToStoreImage();
             }
 
             $this->storeProductInCache();
@@ -304,5 +296,14 @@ class ProductController extends BaseController
         \Cache::rememberForever('products', function () {
             return Product::all();
         });
+    }
+
+    private function prepareToStoreImage()
+    {
+        $imageData = $request->file('photo');
+
+        $path = $this->service->storeImage($imageData);
+
+        $data['photo'] = $path;
     }
 }
