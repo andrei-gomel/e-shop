@@ -124,11 +124,19 @@ Route::get('/client/logout', function (){
         return redirect('/');
     })->name('client-logout');
 
+/**
+ *
+ */
 Route::get('/client/register', function (){
         if(\Illuminate\Support\Facades\Auth::check()){
             return redirect(\route('client-cabinet'));
         }
-        return view('client.reg');
+        else
+        {
+            $country = DB::table('country')->select('id', 'name')->orderBy('id')->get();
+            return view('client.reg', compact('country'));
+        }
+
     })->name('client_reg');
 
 Route::post('/client/register', [\App\Http\Controllers\Client\RegisterController::class, 'store'])->name('client-register');

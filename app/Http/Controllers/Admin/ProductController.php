@@ -58,7 +58,11 @@ class ProductController extends BaseController
         return view('admin.product', compact('products'));
     }
 
-    public function show($id)
+    /**
+     * @param int $id
+     * @return string
+     */
+    public function show(int $id)
     {
         $product = $this->productRepository->getEdit($id);
 
@@ -92,10 +96,12 @@ class ProductController extends BaseController
         return view('admin.add-product', compact('categoryList', 'product'));
     }
 
-    public function edit($id)
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function edit(int $id)
     {
-        $id = intval($id);
-
         //$product = Product::findOrFail($id);
         $product = $this->productRepository->getEdit($id);
 
@@ -164,10 +170,13 @@ class ProductController extends BaseController
         }
     }
 
-    public function update(ProductCreateRequest $request, $id)
+    /**
+     * @param ProductCreateRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(ProductCreateRequest $request, int $id)
     {
-        $id = intval($id);
-
         $product = $this->productRepository->getEdit($id);
 
         if (empty($product)) {
@@ -214,14 +223,16 @@ class ProductController extends BaseController
         }
     }
 
-    public function destroy($id)
+    /**
+     * @param int $id
+     * @return string
+     */
+    public function destroy(int $id)
     {
         if (! Gate::allows('view-protected-part'))
         {
             abort(403);
         }
-
-        $id = intval($id);
 
         return 'Удаление товара ID=' . $id;
 
@@ -270,7 +281,7 @@ class ProductController extends BaseController
                     ->get();
                 break;
 
-            case '4':
+            case '5':
                 $products = $defaultQuery
                     ->orderBy('id', 'ASC')
                     ->get();
@@ -284,7 +295,7 @@ class ProductController extends BaseController
         return view('admin.product', compact('products'));
     }
 
-    public function storeProductInCache()
+    private function storeProductInCache()
     {
         if (\Cache::has('products')) {
             \Cache::forget('products');

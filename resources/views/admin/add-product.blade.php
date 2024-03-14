@@ -56,6 +56,12 @@
 </head>
 
 <body>
+<?php
+    /*echo '<pre>';
+    print_r($product);die();*/
+    ?>
+
+
 @cannot('view-protected-part')
     <h4>Доступ запрещен</h4>
 @endcan
@@ -209,7 +215,7 @@
                     <div class="_container">
                         <div class="add-new__header-body">
                             @if($product->exists)
-                                <h3 class="add-new__title">{{ __('Редактирование товара ID=')$product->id }}</h3>
+                                <h3 class="add-new__title">{{ __('Редактирование товара ID=') }}{{$product->id}}</h3>
                             @else
                                 <h3 class="add-new__title">{{ __('Добавление товара') }}</h3>
                             @endif

@@ -11,7 +11,7 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|regex:/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/',
-            'country_id' => 'required',
+            'country_id' => 'required|integer',
             'city' => 'required|string|min:4|max:25',
             'email' => 'required|email|unique:users,email',
             //  Раскомментировать на боевом сервере:

@@ -38,13 +38,6 @@
 </head>
 <body>
 
-<?php
-$country = [
-    '1' => 'Беларусь',
-    '2' => 'Россия',
-];
-?>
-
    <div class="wrapper">
       <main class="main">
          <section class="sign">
@@ -73,20 +66,12 @@ $country = [
                                   </div>
 
                                  <div class="sign-form-group">
-                                    <select name="country_id" class="form-control form-select" id="country_id" value="{{ old("country_id") }}" required/>
-                                       {{-- @if(old("country_id"))
-                                            <option value="{{ old("country_id") }}">{{ old("value") }}</option>
-                                        @else
-                                            <option value="">Страна</option>
-                                        @endif
-
-                                       @foreach($country as $key => $value)
-                                           <option value="{{ $key }}">{{ $value }}</option>
-                                       @endforeach --}}
-
+                                    <select name="country_id" class="form-control form-select" id="country_id" required/>
                                      <option value="">Страна</option>
-                                     <option value="1">Беларусь</option>
-                                     <option value="2">Россия</option>
+
+                                       @foreach($country as $item)
+                                           <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                       @endforeach
 
                                     </select>
                                  </div>
