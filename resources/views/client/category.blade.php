@@ -142,7 +142,7 @@ $start_time = $start_array[1] + $start_array[0];
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a href="{{ route('category-view', $item->id) }}"
+                                        <a href="{{ route('category-view', $item->slug) }}"
                                            @if($item->title == $category->title)
                                            class="active"
                                             @endif

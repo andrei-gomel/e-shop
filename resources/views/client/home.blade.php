@@ -135,7 +135,7 @@ $start_time = $start_array[1] + $start_array[0];
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a href="{{ route('category-view', $item->id) }}">{{ $item->title }}</a></h4>
+                                    <a href="{{ route('category-view', $item->slug) }}">{{ $item->title }}</a></h4>
                             </div>
                         </div>
                         @endforeach

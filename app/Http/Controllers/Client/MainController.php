@@ -23,11 +23,14 @@ class MainController extends Controller
         return view('client.home', compact('categories', 'products'));
     }
 
-    public function viewCategory($id)
+    public function viewCategory($slug)
     {
-        $products = Product::where('category_id', $id)->get();
+        $products = Category::where('slug', $slug)
+            ->select('categories.title', 'products.id', 'products.name', 'products.price')
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->get();
 
-        $category = Category::where('id', $id)->first();
+        $category = Category::where('slug', $slug)->first();
 
         $categories = Category::where('parent_id', 1)->get();
 
